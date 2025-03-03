@@ -1,5 +1,6 @@
 package com.example.IotProject.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,12 +19,13 @@ public class HistoryLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private String acction;
+    @Column(name = "action", length = 20)
+    private String action;
+    @Column(name = "user_id")
     private Long userId;
 
     @ManyToOne
-    @JoinColumn(name = "userId", referencedColumnName = "id", insertable = false, updatable = false)
-    User user;
+    @JoinColumn(name = "user_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private User user;
 
 }

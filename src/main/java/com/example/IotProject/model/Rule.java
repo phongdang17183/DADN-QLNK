@@ -1,7 +1,9 @@
 package com.example.IotProject.model;
 
 import java.security.Timestamp;
+import java.time.LocalDateTime;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,15 +24,18 @@ public class Rule {
     private Long id;
 
     private String action;
-    private Timestamp createdAt;
-    private Long createBy;
+
+    private LocalDateTime createdAt;
+    @Column(name = "created_by")
+    private Long createdBy;
+    @Column(name = "device_id")
     private Long deviceId;
 
     @ManyToOne
-    @JoinColumn(name = "deviceId", referencedColumnName = "id", insertable = false, updatable = false)
-    Device device;
+    @JoinColumn(name = "device_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private Device device;
 
     @ManyToOne
-    @JoinColumn(name = "createBy", referencedColumnName = "id", insertable = false, updatable = false)
-    User user;
+    @JoinColumn(name = "created_by", referencedColumnName = "id", insertable = false, updatable = false)
+    private User user;
 }

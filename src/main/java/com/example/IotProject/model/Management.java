@@ -1,5 +1,6 @@
 package com.example.IotProject.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,15 +19,16 @@ public class Management {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Column(name = "user_id")
     private Long userId;
+    @Column(name = "device_id")
     private Long deviceId;
 
     @ManyToOne
-    @JoinColumn(name = "userId", referencedColumnName = "id", insertable = false, updatable = false)
-    User user;
+    @JoinColumn(name = "user_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private User user;
 
     @ManyToOne
-    @JoinColumn(name = "deviceId", referencedColumnName = "id", insertable = false, updatable = false)
-    Device device;
+    @JoinColumn(name = "device_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private Device device;
 }

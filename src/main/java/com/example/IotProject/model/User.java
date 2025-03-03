@@ -1,7 +1,9 @@
 package com.example.IotProject.model;
 
 import java.security.Timestamp;
+import java.time.LocalDateTime;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,10 +30,12 @@ public class User {
     private String phone;
     private String email;
 
-    private Timestamp createdAt;
+    private LocalDateTime createdAt;
+    @Column(name = "created_by")
     private Long createdBy;
+
     @ManyToOne
-    @JoinColumn(name = "createdBy", referencedColumnName = "id", insertable = false, updatable = false)
-    Admin admin;
+    @JoinColumn(name = "created_by", referencedColumnName = "id", insertable = false, updatable = false)
+    private Admin admin;
 
 }

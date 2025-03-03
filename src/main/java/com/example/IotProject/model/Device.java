@@ -1,8 +1,10 @@
 package com.example.IotProject.model;
 
 import java.security.Timestamp;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,10 +27,12 @@ public class Device {
     private String name;
     private String type;
     private String status;
-    private Timestamp createdAt;
+    private LocalDateTime createdAt;
+
+    @Column(name = "zone_id")
     private Long zoneId;
 
     @ManyToOne
-    @JoinColumn(name = "zoneId", referencedColumnName = "id", insertable = false, updatable = false)
-    Zone zone;
+    @JoinColumn(name = "zone_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private Zone zone;
 }
