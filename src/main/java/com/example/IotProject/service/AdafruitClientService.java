@@ -31,7 +31,6 @@ public class AdafruitClientService {
 
     public void publishMessage(String message) {
         mqttOutboundChannel.send(MessageBuilder.withPayload(message).build());
-        System.out.println("Message sent: " + message);
     }
 
     public String getFeeds() {

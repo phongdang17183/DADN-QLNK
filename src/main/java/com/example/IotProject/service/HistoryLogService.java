@@ -8,7 +8,7 @@ import com.example.IotProject.repository.HistoryLogRepository;
 @Service
 public class HistoryLogService implements IHistoryLogService {
 
-    private HistoryLogRepository historyLogRepository;
+    private final HistoryLogRepository historyLogRepository;
 
     public HistoryLogService(HistoryLogRepository historyLogRepository) {
         this.historyLogRepository = historyLogRepository;
