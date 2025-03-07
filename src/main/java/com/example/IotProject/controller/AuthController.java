@@ -71,7 +71,7 @@ public class AuthController {
                     .toList();
             return ResponseEntity.badRequest().body(errorMessages);
         }
-        authService.resetPassword(resetPasswordDTO);
+        authService.updatePassword(resetPasswordDTO);
         return ResponseEntity.ok(resetPasswordDTO);
     }
 

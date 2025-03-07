@@ -12,5 +12,5 @@ public interface IAuthService {
 
     void sendMailResetPassword(ResetPasswordDTO resetPasswordDTO);
 
-    void resetPassword(ResetPasswordDTO resetPasswordDTO);
+    void updatePassword(ResetPasswordDTO resetPasswordDTO);
 }

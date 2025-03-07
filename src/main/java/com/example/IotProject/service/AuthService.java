@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.IotProject.component.JwtTokenUtil;
+import com.example.IotProject.dto.EmailDTO;
 import com.example.IotProject.dto.RegisterDTO;
 import com.example.IotProject.dto.ResetPasswordDTO;
 import com.example.IotProject.exception.DataNotFoundException;
@@ -27,6 +28,7 @@ public class AuthService implements IAuthService {
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
+    private final EmailService emailService;
 
     @Override
     public String login(String username, String password) {
@@ -70,13 +72,19 @@ public class AuthService implements IAuthService {
         if (existingUser == null) {
             throw new DataNotFoundException("Your username or email is incorrect");
         }
+        // generate otp
         existingUser.setOtp(String.valueOf((int) (Math.random() * 900000) + 100000));
-        userService.updateUser(existingUser);
+
         // send mail
+        emailService.sendEmail(new EmailDTO(resetPasswordDTO.getEmail(), "Reset Password",
+                "Your OTP is: " + existingUser.getOtp()));
+
+        // update user
+        userService.updateUser(existingUser);
     }
 
     @Override
-    public void resetPassword(ResetPasswordDTO resetPasswordDTO) {
+    public void updatePassword(ResetPasswordDTO resetPasswordDTO) {
         User existingUser = userRepository.findByUsernameAndEmailAndOtp(resetPasswordDTO.getUsername(),
                 resetPasswordDTO.getEmail(), resetPasswordDTO.getOtp());
         if (existingUser == null) {
