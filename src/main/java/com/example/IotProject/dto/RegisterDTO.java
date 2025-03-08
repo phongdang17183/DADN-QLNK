@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RegisterDTO {
+
+    private String fullName;
     private String username;
     private String password;
     private String role;
@@ -18,10 +20,4 @@ public class RegisterDTO {
     private String email;
     private String phone;
     private LocalDateTime createdAt;
-    private Long createdBy;
-
-    @PrePersist
-    public void PrePersist() {
-        this.createdAt = LocalDateTime.now();
-    }
 }

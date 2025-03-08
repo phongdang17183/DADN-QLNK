@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.method.P;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -75,10 +76,10 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     private boolean isBypassToken(@NotNull HttpServletRequest request) {
         // These are the endpoints that don't need authentication(token)
         final List<Pair<String, String>> bypassTokens = List.of(
-                Pair.of(apiPrefix + "/users/login", "POST"),
-                Pair.of(apiPrefix + "/users/register", "POST"),
-                Pair.of(apiPrefix + "/chat/send", "POST"),
-                Pair.of(apiPrefix + "/chat/test", "GET"),
+                Pair.of(apiPrefix + "/login", "POST"),
+                Pair.of(apiPrefix + "/register", "POST"),
+                Pair.of(apiPrefix + "/send", "POST"),
+                Pair.of(apiPrefix + "/test", "GET"),
                 Pair.of("/ws", "GET"),
                 Pair.of("/images/", "GET"));
         for (Pair<String, String> bypassToken : bypassTokens) {
