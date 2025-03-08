@@ -33,7 +33,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     private String apiPrefix;
     private final JwtTokenUtil jwtTokenUtil;
     private final UserDetailsService userDetailsService;
-    private final CustomAccessDeniedHandler customAccessDeniedHandler;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
     @Override
@@ -78,6 +77,9 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         final List<Pair<String, String>> bypassTokens = List.of(
                 Pair.of(apiPrefix + "/users/login", "POST"),
                 Pair.of(apiPrefix + "/users/register", "POST"),
+                Pair.of(apiPrefix + "/chat/send", "POST"),
+                Pair.of(apiPrefix + "/chat/test", "GET"),
+                Pair.of("/ws", "GET"),
                 Pair.of("/images/", "GET"));
         for (Pair<String, String> bypassToken : bypassTokens) {
             /*
