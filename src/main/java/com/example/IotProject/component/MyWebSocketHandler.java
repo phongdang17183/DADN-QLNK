@@ -16,20 +16,20 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         messageScheduler.addSession(session);
-        System.out.println("Kết nối mới: " + session.getId());
-        session.sendMessage(new TextMessage("Kết nối thành công!"));
+        System.out.println("New connection: " + session.getId());
+        session.sendMessage(new TextMessage("Connection Successful!"));
     }
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         String payload = message.getPayload();
-        System.out.println("Tin nhắn từ client: " + payload);
+        System.out.println("Message from Client: " + payload);
         session.sendMessage(new TextMessage("Server: " + payload));
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         messageScheduler.removeSession(session);
-        System.out.println("Đã ngắt kết nối: " + session.getId());
+        System.out.println("Disconnected: " + session.getId());
     }
 }
