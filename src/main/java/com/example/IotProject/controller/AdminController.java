@@ -1,7 +1,11 @@
 package com.example.IotProject.controller;
 
 import com.example.IotProject.model.User;
-import com.example.IotProject.service.AdminService;
+// import com.example.IotProject.service.AdminService;
+import com.example.IotProject.service.IUserService;
+// import com.example.IotProject.service.UserService;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,42 +16,37 @@ import java.util.Optional;
 @RequestMapping("${api.prefix}/admin")
 public class AdminController {
 
-    private final AdminService adminService;
+    private final IUserService userService;
 
-    public AdminController(AdminService adminService) {
-        this.adminService = adminService;
+    public AdminController(IUserService userService) {
+        this.userService = userService;
     }
 
-    @PostMapping("/addUser")
+    @PostMapping("/users")
     public ResponseEntity<User> addUser(@RequestBody User user) {
-
-        return ResponseEntity.ok(adminService.addUser(user));
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.addUser(user));
     }
 
-    @GetMapping("/getAllUsers")
+
+    @GetMapping("/users")
     public ResponseEntity<List<User>> getAllUser() {
-        return ResponseEntity.ok(adminService.getAllUsers());
+        return ResponseEntity.ok(userService.getAllUser());
     }
-
-    @GetMapping("/getUserById/{id}")
+    
+    @GetMapping("/users/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        Optional<User> user = adminService.getUserByID(id);
-        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        return ResponseEntity.ok(userService.getUserById(id));
     }
 
-    @PutMapping("/updateUser")
-    public ResponseEntity<User> updateUser(@RequestBody User user) {
-        try {
-            User updatedUser = adminService.updateUser(user);
-            return ResponseEntity.ok(updatedUser);
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+    @PutMapping("/users/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
+//        user.setId(id);
+        return ResponseEntity.ok(userService.updateUser(user));
     }
 
-    @DeleteMapping("/deleteUser/{id}")
+    @DeleteMapping("/users/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable Long id) {
-        adminService.deleteUser(id);
+        userService.deleteUser(id);
         return ResponseEntity.ok("User deleted successfully!");
     }
 }
