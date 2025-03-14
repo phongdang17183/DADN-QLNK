@@ -13,7 +13,7 @@ import org.springframework.integration.mqtt.outbound.MqttPahoMessageHandler;
 public class MqttOutboundConfig {
 
     private static final String CLIENT_ID = "spring-mqtt-client";
-    private static final String DEFAULT_TOPIC = "phongdang183/feeds/a";
+    private static final String DEFAULT_TOPIC = "danh55162/feeds/test-feed-dht20";
 
     @Bean
     public MessageChannel mqttOutboundChannel() {
