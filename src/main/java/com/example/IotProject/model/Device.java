@@ -1,17 +1,12 @@
 package com.example.IotProject.model;
 
-import java.security.Timestamp;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.util.List;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import com.example.IotProject.enums.DeviceStatus;
+import com.example.IotProject.enums.DeviceSubType;
+import com.example.IotProject.enums.DeviceType;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,15 +19,33 @@ public class Device {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-    private String type;
-    private String status;
+    private String feedName;
+    private String deviceName;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "subtype")
+    private DeviceSubType subType;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type")
+    private DeviceType type;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private DeviceStatus status;
+
     private LocalDateTime createdAt;
 
-    @Column(name = "zone_id")
-    private Long zoneId;
-
     @ManyToOne
-    @JoinColumn(name = "zone_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "zone_id", referencedColumnName = "id")
     private Zone zone;
+
+    @OneToMany(mappedBy = "id")
+    private List<DeviceLog> deviceLogs;
+
+    @OneToMany(mappedBy = "id")
+    private List<Rule> rules;
+
+    @OneToMany(mappedBy = "id")
+    private List<DeviceData> deviceData;
 }

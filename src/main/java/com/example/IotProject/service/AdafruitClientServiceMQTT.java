@@ -16,7 +16,7 @@ import org.springframework.http.HttpHeaders;
 
 
 @Service
-public class AdafruitClientService {
+public class AdafruitClientServiceMQTT {
 
     private final MessageChannel mqttOutboundChannel;
     private static final String FEEDS_URL = "https://io.adafruit.com/api/v2/{username}/feeds";
@@ -25,25 +25,12 @@ public class AdafruitClientService {
     @Value("${mqtt.password}")
     private String PASSWORD;
 
-    public AdafruitClientService(@Qualifier("mqttOutboundChannel") MessageChannel mqttOutboundChannel) {
+    public AdafruitClientServiceMQTT(@Qualifier("mqttOutboundChannel") MessageChannel mqttOutboundChannel) {
         this.mqttOutboundChannel = mqttOutboundChannel;
     }
 
     public void publishMessage(String message) {
         mqttOutboundChannel.send(MessageBuilder.withPayload(message).build());
-    }
-
-    public String getFeeds() {
-
-        RestTemplate restTemplate = new RestTemplate();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("X-AIO-Key", PASSWORD);
-
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-        ResponseEntity<String> response = restTemplate.exchange(FEEDS_URL, HttpMethod.GET, entity, String.class, USERNAME);
-
-        return response.getBody();
     }
 }
 

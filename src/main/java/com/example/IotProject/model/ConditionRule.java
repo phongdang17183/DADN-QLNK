@@ -20,11 +20,10 @@ public class ConditionRule {
     private Long id;
 
     private String name;
-    private String relation;
+    private String relational_operator;
     private String value;
-    private Long ruleId;
 
     @ManyToOne
-    @JoinColumn(name = "ruleId", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "rule_id", referencedColumnName = "id")
     Rule rule;
 }

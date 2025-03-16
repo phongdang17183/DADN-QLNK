@@ -1,5 +1,6 @@
 package com.example.IotProject.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.annotation.ServiceActivator;
@@ -11,9 +12,11 @@ import org.springframework.integration.mqtt.outbound.MqttPahoMessageHandler;
 
 @Configuration
 public class MqttOutboundConfig {
+    @Value("${mqtt.client.id}")
+    private String CLIENT_ID;
 
-    private static final String CLIENT_ID = "spring-mqtt-client";
-    private static final String DEFAULT_TOPIC = "danh55162/feeds/test-feed-dht20";
+    @Value("${mqtt.subscribe.topic}")
+    private String DEFAULT_TOPIC;
 
     @Bean
     public MessageChannel mqttOutboundChannel() {
