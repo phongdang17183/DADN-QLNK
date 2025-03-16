@@ -30,10 +30,11 @@ public class WebSecurityConfig {
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 // config rules for authorize requests
                 .authorizeHttpRequests(requests -> {
-                    requests.requestMatchers("/api/v1/admin/**").hasAuthority("ROLE_USER")
+                    requests.requestMatchers("/api/v1/admin/**").permitAll()
                             .requestMatchers("/api/v1/**").permitAll()
                             .requestMatchers("/api/v1/chat/**").permitAll()
                             .requestMatchers("/ws").permitAll()
+                            .requestMatchers("/ws/**").permitAll()
                             .requestMatchers(HttpMethod.GET, "/images/**").permitAll()
                             .anyRequest().authenticated();
 
