@@ -1,8 +1,8 @@
 package com.example.IotProject.controller;
 
 
-import com.example.IotProject.service.AdaFruitClientServiceHTTP;
-import com.example.IotProject.service.AdafruitClientServiceMQTT;
+import com.example.IotProject.service.adafruitService.AdaFruitClientServiceHTTP;
+import com.example.IotProject.service.adafruitService.AdafruitClientServiceMQTT;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("${api.prefix}/mqtt")
+// This is just a testing AdaFruit Controller
 public class AdafruitController {
     private final AdafruitClientServiceMQTT adaFruitServiceMQTT;
     private final AdaFruitClientServiceHTTP adaFruitServiceHTTP;

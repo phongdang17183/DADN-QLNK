@@ -1,5 +1,6 @@
-package com.example.IotProject.service;
+package com.example.IotProject.service.adafruitService;
 
+import com.example.IotProject.dto.feedDTO.FeedRequestDTO;
 import com.example.IotProject.proxy.AdaFruitProxyHTTP;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,5 +27,11 @@ public class AdaFruitClientServiceHTTP {
     public String getFeedData(String userName, String feedName) {
         String adaFruitFeedData = adaFruitProxy.getAdaFruitFeedData(userName, feedName, AIOKey);
         return adaFruitFeedData;
+    }
+
+    public String createFeed(String userName, String createFeedName) {
+        FeedRequestDTO feedRequest = new FeedRequestDTO(new FeedRequestDTO.Feed(createFeedName));
+        String adaFruitCreateFeedData = adaFruitProxy.createAdaFruitCreateFeed(userName, feedRequest, AIOKey);
+        return adaFruitCreateFeedData;
     }
 }

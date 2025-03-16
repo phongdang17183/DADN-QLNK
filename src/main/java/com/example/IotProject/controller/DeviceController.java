@@ -1,7 +1,7 @@
 package com.example.IotProject.controller;
 
-import com.example.IotProject.dto.deviceDto.CreateDeviceDTO;
-import com.example.IotProject.dto.deviceDto.DeviceInfoDTO;
+import com.example.IotProject.dto.deviceDTO.CreateDeviceDTO;
+import com.example.IotProject.dto.deviceDTO.DeviceInfoDTO;
 import com.example.IotProject.service.DeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
