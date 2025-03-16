@@ -19,16 +19,12 @@ public class Management {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "user_id")
-    private Long userId;
-    @Column(name = "device_id")
-    private Long deviceId;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "device_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "device_id", referencedColumnName = "id")
     private Device device;
 }

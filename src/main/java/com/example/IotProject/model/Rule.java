@@ -26,16 +26,12 @@ public class Rule {
     private String action;
 
     private LocalDateTime createdAt;
-    @Column(name = "created_by")
-    private Long createdBy;
-    @Column(name = "device_id")
-    private Long deviceId;
 
     @ManyToOne
-    @JoinColumn(name = "device_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "device_id", referencedColumnName = "id")
     private Device device;
 
     @ManyToOne
-    @JoinColumn(name = "created_by", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "created_by", referencedColumnName = "id")
     private User user;
 }

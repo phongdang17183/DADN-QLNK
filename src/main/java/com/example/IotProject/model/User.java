@@ -6,19 +6,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -71,4 +63,13 @@ public class User implements UserDetails {
     public void PrePersist() {
         this.createdAt = LocalDateTime.now();
     }
+
+    @OneToMany(mappedBy = "id")
+    private List<Rule> rules;
+
+    @OneToMany(mappedBy = "id")
+    private List<HistoryLog> historyLogs;
+
+    @OneToMany(mappedBy = "id")
+    private List<Management> managements;
 }

@@ -19,15 +19,13 @@ public class DeviceLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long historyLogId;
-    private Long deviceId;
     private String action;
 
     @ManyToOne
-    @JoinColumn(name = "historyLogId", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "history_log_id", referencedColumnName = "id")
     HistoryLog historyLog;
 
     @ManyToOne
-    @JoinColumn(name = "deviceId", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "device_id", referencedColumnName = "id")
     Device device;
 }

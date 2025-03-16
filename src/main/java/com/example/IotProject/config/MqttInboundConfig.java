@@ -17,7 +17,7 @@ import org.springframework.integration.annotation.ServiceActivator;
 @IntegrationComponentScan
 public class MqttInboundConfig {
 
-    @Value("${mqtt.client.id.inbound}")
+    @Value("${mqtt.client.id}")
     private String CLIENT_ID_INBOUND;
 
     @Value("${mqtt.subscribe.topic}")

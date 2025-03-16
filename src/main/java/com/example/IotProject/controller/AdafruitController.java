@@ -1,29 +1,37 @@
 package com.example.IotProject.controller;
 
 
-import com.example.IotProject.service.AdafruitClientService;
+import com.example.IotProject.service.AdaFruitClientServiceHTTP;
+import com.example.IotProject.service.AdafruitClientServiceMQTT;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/mqtt")
+@RequestMapping("${api.prefix}/mqtt")
 public class AdafruitController {
-    private final AdafruitClientService adafruitClient;
+    private final AdafruitClientServiceMQTT adaFruitServiceMQTT;
+    private final AdaFruitClientServiceHTTP adaFruitServiceHTTP;
 
-    public AdafruitController(AdafruitClientService adafruitClient) {
-        this.adafruitClient = adafruitClient;
+    @Autowired
+    public AdafruitController(AdafruitClientServiceMQTT adaFruitServiceMQTT, AdaFruitClientServiceHTTP adaFruitServiceHTTP) {
+        this.adaFruitServiceMQTT = adaFruitServiceMQTT;
+        this.adaFruitServiceHTTP = adaFruitServiceHTTP;
     }
 
     // Endpoint gửi tin nhắn MQTT
+    @PreAuthorize("hasRole('ROLE_Technician')")
     @PostMapping("/send")
     public ResponseEntity<String> sendMqttMessage(@RequestBody String message) {
-        adafruitClient.publishMessage(message);
+        adaFruitServiceMQTT.publishMessage(message);
         return ResponseEntity.ok("Message sent: " + message);
     }
 
-    @GetMapping("/getFeeds")
-    public ResponseEntity<String> getFeeds() {
-        String feeds = adafruitClient.getFeeds();
+    @PreAuthorize("hasRole('ROLE_Technician')")
+    @GetMapping("/{username}/{feedName}/getFeeds")
+    public ResponseEntity<String> getFeeds(@PathVariable String username, @PathVariable String feedName) {
+        String feeds = adaFruitServiceHTTP.getFeedInfo(username, feedName);
         return ResponseEntity.ok(feeds);
     }
 }
