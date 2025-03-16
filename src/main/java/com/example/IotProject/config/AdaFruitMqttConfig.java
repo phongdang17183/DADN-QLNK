@@ -10,7 +10,7 @@ import org.springframework.integration.mqtt.core.MqttPahoClientFactory;
 
 @Configuration
 @EnableFeignClients(basePackages = "com.example.IotProject.proxy")
-public class MqttConfig {
+public class AdaFruitMqttConfig {
 
     @Value("${mqtt.broker.url}")
     private String BROKER_URL;
