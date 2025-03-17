@@ -1,6 +1,5 @@
 package com.example.IotProject.model;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,16 +14,16 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "managements")
-public class Management {
+public class ManagementModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
+    private UserModel user;
 
     @ManyToOne
     @JoinColumn(name = "device_id", referencedColumnName = "id")
-    private Device device;
+    private DeviceModel device;
 }

@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import com.example.IotProject.model.User;
+import com.example.IotProject.model.UserModel;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -27,7 +27,7 @@ public class JwtTokenUtil {
     @Value("${jwt.secretKey}")
     private String secretKey;
 
-    public String generateToken(User user) throws IllegalArgumentException {
+    public String generateToken(UserModel user) throws IllegalArgumentException {
         Map<String, Object> claims = new HashMap<>();
         claims.put("username", user.getUsername());
         try {

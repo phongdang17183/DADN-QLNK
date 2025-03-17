@@ -1,9 +1,7 @@
 package com.example.IotProject.model;
 
-import java.security.Timestamp;
 import java.time.LocalDateTime;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,7 +16,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "rules")
-public class Rule {
+public class RuleModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,9 +27,9 @@ public class Rule {
 
     @ManyToOne
     @JoinColumn(name = "device_id", referencedColumnName = "id")
-    private Device device;
+    private DeviceModel device;
 
     @ManyToOne
     @JoinColumn(name = "created_by", referencedColumnName = "id")
-    private User user;
+    private UserModel user;
 }

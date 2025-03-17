@@ -6,11 +6,12 @@ import com.example.IotProject.enums.DeviceStatus;
 import com.example.IotProject.enums.DeviceSubType;
 import com.example.IotProject.exception.CreateFeedFailedException;
 import com.example.IotProject.exception.ZoneNotFoundException;
-import com.example.IotProject.model.Device;
-import com.example.IotProject.model.Zone;
+import com.example.IotProject.model.DeviceModel;
+import com.example.IotProject.model.ZoneModel;
 import com.example.IotProject.repository.DeviceRepository;
 import com.example.IotProject.repository.ZoneRepository;
 import com.example.IotProject.service.adafruitService.AdaFruitClientServiceHTTP;
+import com.example.IotProject.service.adafruitService.AdafruitClientServiceMQTT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,6 +24,7 @@ public class DeviceService {
     private final DeviceRepository deviceRepository;
     private final ZoneRepository zoneRepository;
     private final AdaFruitClientServiceHTTP adaFruitServiceHTTP;
+    private final AdafruitClientServiceMQTT mqttServiceMQTT;
     private final String userName;
 
     @Autowired
@@ -30,11 +32,13 @@ public class DeviceService {
             DeviceRepository deviceRepository,
             ZoneRepository zoneRepository,
             AdaFruitClientServiceHTTP adaFruitServiceHTTP,
+            AdafruitClientServiceMQTT mqttServiceMQTT,
             @Value("${mqtt.username}") String userName
     ) {
         this.deviceRepository = deviceRepository;
         this.zoneRepository = zoneRepository;
         this.adaFruitServiceHTTP = adaFruitServiceHTTP;
+        this.mqttServiceMQTT = mqttServiceMQTT;
         this.userName = userName;
     }
 
@@ -75,7 +79,7 @@ public class DeviceService {
     public DeviceInfoDTO addDeviceFeed(CreateDeviceDTO createDeviceDTO)
     {
         // TODO: Check if the zone for the device exists
-        Zone zone = zoneRepository.findById((createDeviceDTO.getZoneId())).
+        ZoneModel zone = zoneRepository.findById((createDeviceDTO.getZoneId())).
                 orElseThrow(() -> new ZoneNotFoundException("Zone not found with id: " + createDeviceDTO.getZoneId()));
 
         // TODO: Create the feed of the device in AdaFruit
@@ -83,10 +87,14 @@ public class DeviceService {
         Map<String, Object> responseJSON = parseJson(response);
         if (responseJSON.containsKey("error")) {
             throw new CreateFeedFailedException("Failed to create feed: " + responseJSON.get("error"));
+            /* There are 2 possible errors here:
+            1. The feed already exists
+            2. The feed name is invalid
+             */
         }
 
         // TODO: Create and save the device to the database
-        Device device = new Device();
+        DeviceModel device = new DeviceModel();
         device.setDeviceName(createDeviceDTO.getDeviceName());
         device.setType(createDeviceDTO.getType());
         device.setSubType(createDeviceDTO.getSubType());
@@ -96,6 +104,9 @@ public class DeviceService {
         device.setZone(zone);
 
         deviceRepository.save(device);
+
+        // TODO: Start listen to the feed of the device
+        mqttServiceMQTT.listenToFeed(device.getFeedName());
 
         // TODO: Return the device info DTO
         DeviceInfoDTO deviceInfoDTO = new DeviceInfoDTO();

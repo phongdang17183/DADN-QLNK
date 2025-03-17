@@ -1,7 +1,7 @@
 package com.example.IotProject.service;
 
-import com.example.IotProject.model.HistoryLog;
+import com.example.IotProject.model.HistoryLogModel;
 
 public interface IHistoryLogService {
-    public HistoryLog geHistoryLogById(Long id);
+    public HistoryLogModel geHistoryLogById(Long id);
 }

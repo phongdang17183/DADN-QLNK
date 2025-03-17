@@ -16,7 +16,7 @@ import lombok.Setter;
 @Table(name = "device_data")
 @Getter
 @Setter
-public class DeviceData {
+public class DeviceDataModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,5 +26,5 @@ public class DeviceData {
 
     @ManyToOne
     @JoinColumn(name = "device_id", referencedColumnName = "id")
-    Device device;
+    DeviceModel device;
 }

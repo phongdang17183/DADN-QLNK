@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.IotProject.exception.DataNotFoundException;
 import com.example.IotProject.exception.ExistUsernameException;
-import com.example.IotProject.model.User;
+import com.example.IotProject.model.UserModel;
 import com.example.IotProject.repository.UserRepository;
 
 @Service
@@ -18,7 +18,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User addUser(User user) {
+    public UserModel addUser(UserModel user) {
         if(userRepository.existsByUsername(user.getUsername())){
             throw new ExistUsernameException("Username already exists!");
         }
@@ -26,13 +26,13 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User getUserById(Long id) {
+    public UserModel getUserById(Long id) {
         return userRepository.findById(id).orElseThrow(() ->
             new DataNotFoundException("User not found with id: " + id));
     }
 
     @Override
-    public User updateUser(User user) {
+    public UserModel updateUser(UserModel user) {
         if(!userRepository.existsById(user.getId())) {
             throw new DataNotFoundException("Cannot update. User not found with id: " + user.getId());
         }
@@ -48,7 +48,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public List<User> getAllUser() {
+    public List<UserModel> getAllUser() {
         return userRepository.findAll();
     }
 }

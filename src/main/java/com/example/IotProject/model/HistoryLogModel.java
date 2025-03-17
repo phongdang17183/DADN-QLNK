@@ -10,7 +10,7 @@ import java.util.List;
 @Getter
 @Setter
 @Table(name = "history_logs")
-public class HistoryLog {
+public class HistoryLogModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,9 +19,9 @@ public class HistoryLog {
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
+    private UserModel user;
 
     @OneToMany(mappedBy = "id")
-    private List<DeviceLog> deviceLogs;
+    private List<DeviceLogModel> deviceLogs;
 
 }

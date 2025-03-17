@@ -1,7 +1,7 @@
 package com.example.IotProject.repository;
 
-import com.example.IotProject.model.DeviceData;
+import com.example.IotProject.model.DeviceDataModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface SensorRepository extends JpaRepository<DeviceData, Integer> {
+public interface SensorRepository extends JpaRepository<DeviceDataModel, Integer> {
 }

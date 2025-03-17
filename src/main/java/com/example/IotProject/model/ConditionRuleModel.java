@@ -14,7 +14,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "condition_rules")
-public class ConditionRule {
+public class ConditionRuleModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,5 +25,5 @@ public class ConditionRule {
 
     @ManyToOne
     @JoinColumn(name = "rule_id", referencedColumnName = "id")
-    Rule rule;
+    RuleModel rule;
 }

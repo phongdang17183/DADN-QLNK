@@ -1,4 +1,4 @@
-package com.example.IotProject.config;
+package com.example.IotProject.config.adaFruitMQTT;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -32,7 +32,9 @@ public class MqttInboundConfig {
     @Bean
     public MessageProducer mqttInbound(MqttPahoClientFactory mqttClientFactory) {
         MqttPahoMessageDrivenChannelAdapter adapter =
-                new MqttPahoMessageDrivenChannelAdapter(CLIENT_ID_INBOUND, mqttClientFactory, SUBSCRIBE_TOPIC);
+                new MqttPahoMessageDrivenChannelAdapter(CLIENT_ID_INBOUND, mqttClientFactory);
+
+
         adapter.setCompletionTimeout(5000);
         adapter.setConverter(new DefaultPahoMessageConverter());
         adapter.setQos(1);

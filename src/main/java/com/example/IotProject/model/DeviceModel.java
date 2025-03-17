@@ -14,7 +14,7 @@ import lombok.Setter;
 @Table(name = "devices")
 @Getter
 @Setter
-public class Device {
+public class DeviceModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -38,14 +38,14 @@ public class Device {
 
     @ManyToOne
     @JoinColumn(name = "zone_id", referencedColumnName = "id")
-    private Zone zone;
+    private ZoneModel zone;
 
     @OneToMany(mappedBy = "id")
-    private List<DeviceLog> deviceLogs;
+    private List<DeviceLogModel> deviceLogs;
 
     @OneToMany(mappedBy = "id")
-    private List<Rule> rules;
+    private List<RuleModel> rules;
 
     @OneToMany(mappedBy = "id")
-    private List<DeviceData> deviceData;
+    private List<DeviceDataModel> deviceData;
 }

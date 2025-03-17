@@ -10,7 +10,7 @@ import java.util.List;
 @Table(name = "zones")
 @Getter
 @Setter
-public class Zone {
+public class ZoneModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,5 +18,5 @@ public class Zone {
     private String name;
 
     @OneToMany(mappedBy = "zone")
-    private List<Device> devices;
+    private List<DeviceModel> devices;
 }

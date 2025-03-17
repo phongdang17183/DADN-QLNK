@@ -1,5 +1,6 @@
-package com.example.IotProject.config;
+package com.example.IotProject.config.adaFruitMQTT;
 
+import lombok.Data;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.openfeign.EnableFeignClients;
@@ -10,6 +11,7 @@ import org.springframework.integration.mqtt.core.MqttPahoClientFactory;
 
 @Configuration
 @EnableFeignClients(basePackages = "com.example.IotProject.proxy")
+@Data
 public class AdaFruitMqttConfig {
 
     @Value("${mqtt.broker.url}")
