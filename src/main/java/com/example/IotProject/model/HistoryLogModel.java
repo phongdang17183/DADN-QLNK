@@ -18,10 +18,10 @@ public class HistoryLogModel {
     private String action;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id")
     private UserModel user;
 
-    @OneToMany(mappedBy = "id")
+    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
     private List<DeviceLogModel> deviceLogs;
 
 }

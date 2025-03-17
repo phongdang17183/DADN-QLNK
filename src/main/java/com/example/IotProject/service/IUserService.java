@@ -10,4 +10,5 @@ public interface IUserService {
     public UserModel addUser(UserModel user);
     public UserModel updateUser(UserModel user);
     public void deleteUser(Long id);
+    public UserModel getCurrentUser();
 }

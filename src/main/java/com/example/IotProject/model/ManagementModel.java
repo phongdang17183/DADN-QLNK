@@ -20,10 +20,10 @@ public class ManagementModel {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id")
     private UserModel user;
 
     @ManyToOne
-    @JoinColumn(name = "device_id", referencedColumnName = "id")
+    @JoinColumn(name = "device_id")
     private DeviceModel device;
 }

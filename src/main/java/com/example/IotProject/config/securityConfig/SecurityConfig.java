@@ -1,4 +1,4 @@
-package com.example.IotProject.config;
+package com.example.IotProject.config.securityConfig;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

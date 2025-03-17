@@ -63,12 +63,12 @@ public class UserModel implements UserDetails {
         this.createdAt = LocalDateTime.now();
     }
 
-    @OneToMany(mappedBy = "id")
+    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
     private List<RuleModel> rules;
 
-    @OneToMany(mappedBy = "id")
+    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
     private List<HistoryLogModel> historyLogs;
 
-    @OneToMany(mappedBy = "id")
+    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
     private List<ManagementModel> managements;
 }

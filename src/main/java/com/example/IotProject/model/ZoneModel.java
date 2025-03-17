@@ -17,6 +17,6 @@ public class ZoneModel {
 
     private String name;
 
-    @OneToMany(mappedBy = "zone")
+    @OneToMany(mappedBy = "zone", cascade = CascadeType.ALL)
     private List<DeviceModel> devices;
 }

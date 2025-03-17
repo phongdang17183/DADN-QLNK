@@ -24,6 +24,6 @@ public class ConditionRuleModel {
     private String value;
 
     @ManyToOne
-    @JoinColumn(name = "rule_id", referencedColumnName = "id")
+    @JoinColumn(name = "rule_id")
     RuleModel rule;
 }
