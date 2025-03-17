@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.IotProject.dto.LoginDTO;
 import com.example.IotProject.dto.RegisterDTO;
 import com.example.IotProject.dto.ResetPasswordDTO;
-import com.example.IotProject.model.User;
 import com.example.IotProject.response.StringResponse;
 import com.example.IotProject.service.AuthService;
 

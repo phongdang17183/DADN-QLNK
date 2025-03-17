@@ -11,21 +11,19 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "device_logs")
-@Setter
 @Getter
-public class DeviceLog {
+@Setter
+@Table(name = "condition_rules")
+public class ConditionRuleModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String action;
+    private String name;
+    private String relational_operator;
+    private String value;
 
     @ManyToOne
-    @JoinColumn(name = "history_log_id", referencedColumnName = "id")
-    HistoryLog historyLog;
-
-    @ManyToOne
-    @JoinColumn(name = "device_id", referencedColumnName = "id")
-    Device device;
+    @JoinColumn(name = "rule_id", referencedColumnName = "id")
+    RuleModel rule;
 }

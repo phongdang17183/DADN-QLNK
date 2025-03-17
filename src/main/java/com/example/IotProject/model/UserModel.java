@@ -1,6 +1,5 @@
 package com.example.IotProject.model;
 
-import java.security.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,7 +23,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class User implements UserDetails {
+public class UserModel implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -65,11 +64,11 @@ public class User implements UserDetails {
     }
 
     @OneToMany(mappedBy = "id")
-    private List<Rule> rules;
+    private List<RuleModel> rules;
 
     @OneToMany(mappedBy = "id")
-    private List<HistoryLog> historyLogs;
+    private List<HistoryLogModel> historyLogs;
 
     @OneToMany(mappedBy = "id")
-    private List<Management> managements;
+    private List<ManagementModel> managements;
 }

@@ -1,6 +1,6 @@
 package com.example.IotProject.controller;
 
-import com.example.IotProject.model.User;
+import com.example.IotProject.model.UserModel;
 // import com.example.IotProject.service.AdminService;
 import com.example.IotProject.service.IUserService;
 // import com.example.IotProject.service.UserService;
@@ -11,7 +11,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("${api.prefix}/admin")
@@ -25,25 +24,25 @@ public class AdminController {
 
     @PreAuthorize("hasRole('ROLE_Admin')")
     @PostMapping("/users")
-    public ResponseEntity<User> addUser(@RequestBody User user) {
+    public ResponseEntity<UserModel> addUser(@RequestBody UserModel user) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.addUser(user));
     }
 
     @PreAuthorize("hasRole('ROLE_Admin')")
     @GetMapping("/users")
-    public ResponseEntity<List<User>> getAllUser() {
+    public ResponseEntity<List<UserModel>> getAllUser() {
         return ResponseEntity.ok(userService.getAllUser());
     }
 
     @PreAuthorize("hasRole('ROLE_Admin')")
     @GetMapping("/users/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+    public ResponseEntity<UserModel> getUserById(@PathVariable Long id) {
         return ResponseEntity.ok(userService.getUserById(id));
     }
 
     @PreAuthorize("hasRole('ROLE_Admin')")
     @PutMapping("/users/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
+    public ResponseEntity<UserModel> updateUser(@PathVariable Long id, @RequestBody UserModel user) {
 //        user.setId(id);
         return ResponseEntity.ok(userService.updateUser(user));
     }

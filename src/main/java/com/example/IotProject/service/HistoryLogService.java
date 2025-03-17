@@ -2,7 +2,7 @@ package com.example.IotProject.service;
 
 import org.springframework.stereotype.Service;
 
-import com.example.IotProject.model.HistoryLog;
+import com.example.IotProject.model.HistoryLogModel;
 import com.example.IotProject.repository.HistoryLogRepository;
 
 @Service
@@ -15,7 +15,7 @@ public class HistoryLogService implements IHistoryLogService {
     }
 
     @Override
-    public HistoryLog geHistoryLogById(Long id) {
+    public HistoryLogModel geHistoryLogById(Long id) {
         return historyLogRepository.findById(id).orElse(null);
     }
 

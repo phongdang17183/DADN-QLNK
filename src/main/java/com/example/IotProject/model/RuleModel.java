@@ -1,6 +1,6 @@
 package com.example.IotProject.model;
 
-import java.security.Timestamp;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,18 +13,23 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "device_data")
 @Getter
 @Setter
-public class DeviceData {
+@Table(name = "rules")
+public class RuleModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Timestamp time;
-    private Long value;
+    private String action;
+
+    private LocalDateTime createdAt;
 
     @ManyToOne
     @JoinColumn(name = "device_id", referencedColumnName = "id")
-    Device device;
+    private DeviceModel device;
+
+    @ManyToOne
+    @JoinColumn(name = "created_by", referencedColumnName = "id")
+    private UserModel user;
 }

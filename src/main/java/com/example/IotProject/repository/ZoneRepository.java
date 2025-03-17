@@ -1,14 +1,13 @@
 package com.example.IotProject.repository;
 
-import com.example.IotProject.model.Zone;
+import com.example.IotProject.model.ZoneModel;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-public interface ZoneRepository extends JpaRepository<Zone, Long> {
-    List<Zone> findByName(String name);
+public interface ZoneRepository extends JpaRepository<ZoneModel, Long> {
+    List<ZoneModel> findByName(String name);
 
     // Get list of all zone using pageable
-    List<Zone> findAll();
+    List<ZoneModel> findAll();
 }

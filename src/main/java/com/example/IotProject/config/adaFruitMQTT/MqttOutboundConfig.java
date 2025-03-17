@@ -1,4 +1,4 @@
-package com.example.IotProject.config;
+package com.example.IotProject.config.adaFruitMQTT;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

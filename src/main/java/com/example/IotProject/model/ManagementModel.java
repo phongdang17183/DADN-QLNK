@@ -13,17 +13,17 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Table(name = "condition_rules")
-public class ConditionRule {
+@Table(name = "managements")
+public class ManagementModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-    private String relational_operator;
-    private String value;
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private UserModel user;
 
     @ManyToOne
-    @JoinColumn(name = "rule_id", referencedColumnName = "id")
-    Rule rule;
+    @JoinColumn(name = "device_id", referencedColumnName = "id")
+    private DeviceModel device;
 }

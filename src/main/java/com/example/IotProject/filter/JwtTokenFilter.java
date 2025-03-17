@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.access.method.P;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,10 +12,9 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.example.IotProject.component.CustomAccessDeniedHandler;
 import com.example.IotProject.component.CustomAuthenticationEntryPoint;
 import com.example.IotProject.component.JwtTokenUtil;
-import com.example.IotProject.model.User;
+import com.example.IotProject.model.UserModel;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -57,7 +55,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             final String token = authHeader.substring(7);
             final String username = jwtTokenUtil.extractUsername(token);
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                User user = (User) userDetailsService.loadUserByUsername(username);
+                UserModel user = (UserModel) userDetailsService.loadUserByUsername(username);
                 if (jwtTokenUtil.validateToken(token, user)) {
                     UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                             user, null, user.getAuthorities());
