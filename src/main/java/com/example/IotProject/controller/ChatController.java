@@ -10,7 +10,8 @@ public class ChatController {
     @MessageMapping("/chat") // Client gửi đến "/app/chat"
     @SendTo("/topic/messages") // Server gửi đến "/topic/messages"
     public String handleChatMessage(String message) {
-
+        // define message from FE
+        //
         return "Server received: " + message;
     }
 }
