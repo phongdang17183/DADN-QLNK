@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DeviceRepository extends JpaRepository<DeviceModel, Integer> {
-
+    DeviceModel findByFeedName(String feedName);
 }

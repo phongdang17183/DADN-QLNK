@@ -146,4 +146,8 @@ public class DeviceService {
 
         return deviceInfoDTO;
     }
+
+    public DeviceModel findByFeed(String feedName){
+        return deviceRepository.findByFeedName(feedName);
+    }
 }

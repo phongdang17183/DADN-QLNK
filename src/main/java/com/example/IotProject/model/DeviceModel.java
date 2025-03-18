@@ -46,7 +46,4 @@ public class DeviceModel {
 
     @OneToMany(mappedBy = "device", cascade = CascadeType.ALL)
     private List<DeviceDataModel> deviceData;
-
-    @OneToMany(mappedBy = "device", cascade = CascadeType.ALL)
-    private List<ManagementModel> managements;
 }

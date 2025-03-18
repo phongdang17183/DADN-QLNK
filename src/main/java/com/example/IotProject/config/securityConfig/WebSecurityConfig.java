@@ -32,6 +32,7 @@ public class WebSecurityConfig {
                             .requestMatchers("/api/v1/**").permitAll()
                             .requestMatchers("/api/v1/chat/**").permitAll()
                             .requestMatchers("/ws").permitAll()
+                            .requestMatchers("/ws/**").permitAll()
                             .requestMatchers(HttpMethod.GET, "/images/**").permitAll()
                             .anyRequest().authenticated();
 
