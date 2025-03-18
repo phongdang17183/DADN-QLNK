@@ -1,5 +1,8 @@
 package com.example.IotProject.config.adaFruitMQTT;
 
+import com.example.IotProject.model.DeviceModel;
+import com.example.IotProject.repository.DeviceRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,15 +16,24 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
 import org.springframework.integration.annotation.ServiceActivator;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Configuration
 @IntegrationComponentScan
 public class MqttInboundConfig {
 
+    DeviceRepository deviceRepository;
+    AdaFruitMqttConfig adaFruitMqttConfig;
+
+    @Autowired
+    public MqttInboundConfig(DeviceRepository deviceRepository, AdaFruitMqttConfig adaFruitMqttConfig) {
+        this.deviceRepository = deviceRepository;
+        this.adaFruitMqttConfig = adaFruitMqttConfig;
+    }
+
     @Value("${mqtt.client.id}")
     private String CLIENT_ID_INBOUND;
-
-    @Value("${mqtt.subscribe.topic}")
-    private String SUBSCRIBE_TOPIC;
 
 
     @Bean
@@ -34,6 +46,16 @@ public class MqttInboundConfig {
         MqttPahoMessageDrivenChannelAdapter adapter =
                 new MqttPahoMessageDrivenChannelAdapter(CLIENT_ID_INBOUND, mqttClientFactory);
 
+        // TODO: Get list of feedkeys from device table and subscribe to those topics
+        List<String> feedKeys = deviceRepository.findAll().stream()
+                .map(DeviceModel::getFeedName)
+                .collect(Collectors.toList());
+
+        String userName = adaFruitMqttConfig.getUSERNAME();
+
+        feedKeys.forEach(feedKey -> adapter.addTopic(userName + "/feeds/" + feedKey));
+
+        System.out.println("Subscribing to topics: " + feedKeys);
 
         adapter.setCompletionTimeout(5000);
         adapter.setConverter(new DefaultPahoMessageConverter());
