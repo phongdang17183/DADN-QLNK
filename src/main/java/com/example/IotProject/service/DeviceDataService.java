@@ -21,7 +21,7 @@ public class DeviceDataService {
         this.deviceRepository = deviceRepository;
     }
 
-    public DeviceDataModel saveData(Timestamp time, Long value, String feedname){
+    public DeviceDataModel saveData(Timestamp time, Float value, String feedname){
         DeviceModel device = deviceRepository.findByFeedName(feedname);
 
         DeviceDataModel newData = new DeviceDataModel();

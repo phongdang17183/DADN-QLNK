@@ -74,16 +74,16 @@ public class DeviceService {
                 return zoneId + "_servo";
             }
             case TEMPERATURE -> {
-                return "temperature_" + zoneId;
+                return "temp-" + zoneId;
             }
             case HUMIDITY -> {
-                return "humidity_" + zoneId;
+                return "airm-" + zoneId;
             }
             case SOIL_MOISTURE -> {
-                return "soil_" + zoneId;
+                return "soil-" + zoneId;
             }
             case LIGHT -> {
-                return "light_" + zoneId;
+                return "light-" + zoneId;
             }
         }
         return null;

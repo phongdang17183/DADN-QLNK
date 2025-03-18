@@ -22,9 +22,10 @@ public class DeviceDataModel {
     private Long id;
 
     private Timestamp time;
-    private Long value;
+    private Float value;
 
     @ManyToOne
     @JoinColumn(name = "device_id")
     DeviceModel device;
+
 }

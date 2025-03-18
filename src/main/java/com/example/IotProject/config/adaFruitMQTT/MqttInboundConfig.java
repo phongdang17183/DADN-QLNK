@@ -3,9 +3,9 @@ package com.example.IotProject.config.adaFruitMQTT;
 import com.example.IotProject.component.MessageScheduler;
 import com.example.IotProject.dto.WebSocketDataDTO.DeviceDataDTO;
 import com.example.IotProject.model.DeviceModel;
+import com.example.IotProject.repository.DeviceRepository;
 import com.example.IotProject.service.DeviceDataService;
 import com.example.IotProject.service.DeviceService;
-import com.example.IotProject.repository.DeviceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -95,11 +95,12 @@ public class MqttInboundConfig {
                 String feedName = topic.substring(index + 1);
                 System.out.println("Extracted feedName: " + feedName);
 
-                Long value = Long.parseLong(message.getPayload().toString());
+                Float value = Float.parseFloat(message.getPayload().toString());
                 Timestamp now = new Timestamp(System.currentTimeMillis());
                 DeviceDataDTO data = new DeviceDataDTO(feedName, now, value);
                 // websocket send value now feedname to client
                 messagingTemplate.convertAndSend("/topic/messages", data);
+                // save db
                 deviceDataService.saveData(now, value, feedName);
 
             } else {

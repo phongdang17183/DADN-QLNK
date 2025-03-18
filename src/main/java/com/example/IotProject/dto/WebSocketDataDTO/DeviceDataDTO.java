@@ -12,7 +12,7 @@ import java.sql.Timestamp;
 public class DeviceDataDTO {
     private String feedName;
     private Timestamp timestamp;
-    private Long value;
+    private Float value;
 
     @Override
     public String toString() {
