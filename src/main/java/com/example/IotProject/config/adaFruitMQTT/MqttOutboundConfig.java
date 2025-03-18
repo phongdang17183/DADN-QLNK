@@ -31,4 +31,10 @@ public class MqttOutboundConfig {
         handler.setDefaultTopic(DEFAULT_TOPIC);
         return handler;
     }
+
+    // Expose the handler as a bean so it can be injected elsewhere
+    @Bean
+    public MqttPahoMessageHandler mqttMessageHandler(MqttPahoClientFactory mqttClientFactory) {
+        return (MqttPahoMessageHandler) mqttOutbound(mqttClientFactory);
+    }
 }
