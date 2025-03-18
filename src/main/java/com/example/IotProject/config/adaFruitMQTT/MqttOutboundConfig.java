@@ -6,14 +6,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.mqtt.core.MqttPahoClientFactory;
+import org.springframework.integration.mqtt.support.DefaultPahoMessageConverter;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
 import org.springframework.integration.mqtt.outbound.MqttPahoMessageHandler;
 
 @Configuration
 public class MqttOutboundConfig {
-    @Value("${mqtt.client.id}")
-    private String CLIENT_ID;
+//    @Value("${mqtt.client.id}")
+//    private String CLIENT_ID;
 
     @Value("${mqtt.subscribe.topic}")
     private String DEFAULT_TOPIC;
@@ -26,13 +27,15 @@ public class MqttOutboundConfig {
     @Bean
     @ServiceActivator(inputChannel = "mqttOutboundChannel")
     public MessageHandler mqttOutbound(MqttPahoClientFactory mqttClientFactory) {
+        String CLIENT_ID = "mqtt-handler" ;
         MqttPahoMessageHandler handler = new MqttPahoMessageHandler(CLIENT_ID, mqttClientFactory);
         handler.setAsync(true);
         handler.setDefaultTopic(DEFAULT_TOPIC);
+        handler.setConverter(new DefaultPahoMessageConverter());
         return handler;
     }
 
-    // Expose the handler as a bean so it can be injected elsewhere
+//     Expose the handler as a bean so it can be injected elsewhere
     @Bean
     public MqttPahoMessageHandler mqttMessageHandler(MqttPahoClientFactory mqttClientFactory) {
         return (MqttPahoMessageHandler) mqttOutbound(mqttClientFactory);

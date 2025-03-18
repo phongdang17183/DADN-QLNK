@@ -4,6 +4,7 @@ package com.example.IotProject.service.adafruitService;
 
 
 import com.example.IotProject.config.adaFruitMQTT.AdaFruitMqttConfig;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,14 +12,16 @@ import org.springframework.integration.core.MessageProducer;
 import org.springframework.integration.mqtt.inbound.MqttPahoMessageDrivenChannelAdapter;
 import org.springframework.integration.mqtt.outbound.MqttPahoMessageHandler;
 import org.springframework.messaging.MessageChannel;
+import org.springframework.messaging.MessageHandler;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 
 
 @Service
+
 public class AdafruitClientServiceMQTT {
 
-    private final MessageChannel mqttOutboundChannel;
+    private final MessageHandler messageHandler;
 
     // Inbound
     private MqttPahoMessageDrivenChannelAdapter mqttInbound;
@@ -30,15 +33,15 @@ public class AdafruitClientServiceMQTT {
 
     @Autowired
     public AdafruitClientServiceMQTT(
-            @Qualifier("mqttOutboundChannel") MessageChannel mqttOutboundChannel,
             @Qualifier("mqttInbound") MessageProducer mqttInbound,
-            MqttPahoMessageHandler mqttMessageHandler,
+            @Qualifier("mqttOutbound") MessageHandler messageHandler,
+            @Qualifier("mqttMessageHandler") MqttPahoMessageHandler mqttMessageHandler,
             AdaFruitMqttConfig adaFruitMqttConfig
     ) {
-        this.mqttOutboundChannel = mqttOutboundChannel;
         this.mqttInbound = (MqttPahoMessageDrivenChannelAdapter) mqttInbound;
-        this.mqttMessageHandler = mqttMessageHandler;
         this.adaFruitMqttConfig = adaFruitMqttConfig;
+        this.messageHandler = messageHandler;
+        this.mqttMessageHandler = mqttMessageHandler;
     }
 
     // TODO: Use feedkey to generate topic name and subscribe to that topic
@@ -55,9 +58,16 @@ public class AdafruitClientServiceMQTT {
     }
 
     // Outbound
-    public void publishMessage(String message) {
-        mqttOutboundChannel.send(MessageBuilder.withPayload(message).build());
+    public void publishMessage(Float message, String topic) {
+        String userName = adaFruitMqttConfig.getUSERNAME();
+        topic = userName + "/feeds/" + topic;
+
+        updateTopic(topic);
+
+
+        messageHandler.handleMessage(MessageBuilder.withPayload(message.toString()).build());
     }
+
 
 
 

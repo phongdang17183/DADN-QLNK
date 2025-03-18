@@ -68,10 +68,10 @@ public class DeviceService {
     private String createFeedName(DeviceSubType subType, Long zoneId) {
         switch (subType) {
             case PUMP -> {
-                return zoneId + "_pump";
+                return "pump-" + zoneId;
             }
             case SERVO -> {
-                return zoneId + "_servo";
+                return "servo-" + zoneId;
             }
             case TEMPERATURE -> {
                 return "temp-" + zoneId;
