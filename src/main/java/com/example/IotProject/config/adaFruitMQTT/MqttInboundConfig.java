@@ -102,7 +102,7 @@ public class MqttInboundConfig {
                 messagingTemplate.convertAndSend("/topic/messages", data);
                 // save db
                 deviceDataService.saveData(now, value, feedName);
-
+//                ruleService ??
             } else {
                 System.out.println("Invalid topic format: " + topic);
             }

@@ -95,7 +95,16 @@ public class DeviceService {
         // TODO: Check if the zone for the device exists
         ZoneModel zone = zoneRepository.findById((createDeviceDTO.getZoneId())).
                 orElseThrow(() -> new ZoneNotFoundException("Zone not found with id: " + createDeviceDTO.getZoneId()));
-
+        // TODO: Create the feed of the device in AdaFruit
+        String response = adaFruitServiceHTTP.createFeed(userName, createFeedName(createDeviceDTO.getSubType(), createDeviceDTO.getZoneId()));
+        Map<String, Object> responseJSON = parseJson(response);
+        if (responseJSON.containsKey("error")) {
+            throw new CreateFeedFailedException("Failed to create feed: " + responseJSON.get("error"));
+            /* There are 2 possible errors here:
+            1. The feed already exists
+            2. The feed name is invalid
+             */
+        }
         // TODO: Create and save the device to the database
         DeviceModel device = new DeviceModel();
         device.setDeviceName(createDeviceDTO.getDeviceName());
@@ -120,16 +129,7 @@ public class DeviceService {
 
 
 
-        // TODO: Create the feed of the device in AdaFruit
-        String response = adaFruitServiceHTTP.createFeed(userName, createFeedName(createDeviceDTO.getSubType(), createDeviceDTO.getZoneId()));
-        Map<String, Object> responseJSON = parseJson(response);
-        if (responseJSON.containsKey("error")) {
-            throw new CreateFeedFailedException("Failed to create feed: " + responseJSON.get("error"));
-            /* There are 2 possible errors here:
-            1. The feed already exists
-            2. The feed name is invalid
-             */
-        }
+
 
         // TODO: Start listen to the feed of the device
         mqttServiceMQTT.listenToFeed(device.getFeedName());

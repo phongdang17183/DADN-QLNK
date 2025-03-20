@@ -17,17 +17,12 @@ public class ChatController {
     }
 
     @MessageMapping("/chat") // Client gửi đến "/app/chat"
-    @SendTo("/topic/messages") // Server gửi đến "/topic/messages"
+//    @SendTo("/topic/messages") // Server gửi đến "/topic/messages"
     public DeviceDataDTO handleChatMessage(DeviceDataDTO message) {
-        // define message from FE
-        //
 
         System.out.println(message);
 
         adafruitClientServiceMQTT.publishMessage(message.getValue(), message.getFeedName());
-
-
-
 
         return message;
     }

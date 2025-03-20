@@ -55,6 +55,11 @@ public class UserService implements IUserService {
         return userRepository.findAll();
     }
 
+    @Override
+    public List<UserModel> getUserByRole(String role) {
+        return userRepository.findByRole(role);
+    }
+
     public UserModel getCurrentUser() {
         return userRepository.findByUsername(getCurrentUserName()).orElseThrow(() ->
             new DataNotFoundException("User not found"));

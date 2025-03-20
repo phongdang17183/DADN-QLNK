@@ -63,9 +63,10 @@ public class AdafruitClientServiceMQTT {
         topic = userName + "/feeds/" + topic;
 
         updateTopic(topic);
+        Long value = message.longValue();
 
 
-        messageHandler.handleMessage(MessageBuilder.withPayload(message.toString()).build());
+        messageHandler.handleMessage(MessageBuilder.withPayload(value.toString()).build());
     }
 
 
