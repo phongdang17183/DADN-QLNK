@@ -24,9 +24,8 @@ public class MessageScheduler {
         sessions.remove(session);
     }
 
-    @Scheduled(fixedRate = 5000) // Gửi mỗi 5 giây
-    public void sendPeriodicMessage() {
-        String message = "Tin nhắn tự động từ server: " + System.currentTimeMillis();
+    public void sendPeriodicMessage(String message) {
+        message = "Tin nhắn tự động từ server: " + message;
         for (WebSocketSession webSocketSession : sessions) {
             if (webSocketSession.isOpen()) {
                 try {

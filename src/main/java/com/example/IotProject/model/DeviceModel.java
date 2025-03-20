@@ -16,10 +16,8 @@ import lombok.Setter;
 @Setter
 public class DeviceModel {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String feedName; // New primary key
 
-    private String feedName;
     private String deviceName;
 
     @Enumerated(EnumType.STRING)
@@ -37,15 +35,15 @@ public class DeviceModel {
     private LocalDateTime createdAt;
 
     @ManyToOne
-    @JoinColumn(name = "zone_id", referencedColumnName = "id")
+    @JoinColumn(name = "zone_id")
     private ZoneModel zone;
 
-    @OneToMany(mappedBy = "id")
+    @OneToMany(mappedBy = "device", cascade = CascadeType.ALL)
     private List<DeviceLogModel> deviceLogs;
 
-    @OneToMany(mappedBy = "id")
+    @OneToMany(mappedBy = "device", cascade = CascadeType.ALL)
     private List<RuleModel> rules;
 
-    @OneToMany(mappedBy = "id")
+    @OneToMany(mappedBy = "device", cascade = CascadeType.ALL)
     private List<DeviceDataModel> deviceData;
 }

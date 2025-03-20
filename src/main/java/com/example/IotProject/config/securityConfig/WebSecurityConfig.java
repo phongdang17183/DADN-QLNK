@@ -1,4 +1,4 @@
-package com.example.IotProject.config;
+package com.example.IotProject.config.securityConfig;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,8 +9,6 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.example.IotProject.component.CustomAccessDeniedHandler;
-import com.example.IotProject.component.CustomAuthenticationEntryPoint;
 import com.example.IotProject.filter.JwtTokenFilter;
 
 import lombok.RequiredArgsConstructor;
@@ -34,6 +32,7 @@ public class WebSecurityConfig {
                             .requestMatchers("/api/v1/**").permitAll()
                             .requestMatchers("/api/v1/chat/**").permitAll()
                             .requestMatchers("/ws").permitAll()
+                            .requestMatchers("/ws/**").permitAll()
                             .requestMatchers(HttpMethod.GET, "/images/**").permitAll()
                             .anyRequest().authenticated();
 

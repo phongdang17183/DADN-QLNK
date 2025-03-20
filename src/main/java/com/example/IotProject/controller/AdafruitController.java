@@ -25,7 +25,7 @@ public class AdafruitController {
     @PreAuthorize("hasRole('ROLE_Technician')")
     @PostMapping("/send")
     public ResponseEntity<String> sendMqttMessage(@RequestBody String message) {
-        adaFruitServiceMQTT.publishMessage(message);
+//        adaFruitServiceMQTT.publishMessage(message);
         return ResponseEntity.ok("Message sent: " + message);
     }
 

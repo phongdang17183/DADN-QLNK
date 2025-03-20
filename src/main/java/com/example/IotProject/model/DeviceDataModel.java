@@ -1,6 +1,6 @@
 package com.example.IotProject.model;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,9 +22,10 @@ public class DeviceDataModel {
     private Long id;
 
     private Timestamp time;
-    private Long value;
+    private Float value;
 
     @ManyToOne
-    @JoinColumn(name = "device_id", referencedColumnName = "id")
+    @JoinColumn(name = "device_id")
     DeviceModel device;
+
 }

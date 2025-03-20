@@ -7,8 +7,12 @@ import com.example.IotProject.enums.DeviceSubType;
 import com.example.IotProject.exception.CreateFeedFailedException;
 import com.example.IotProject.exception.ZoneNotFoundException;
 import com.example.IotProject.model.DeviceModel;
+import com.example.IotProject.model.ManagementModel;
+import com.example.IotProject.model.UserModel;
 import com.example.IotProject.model.ZoneModel;
 import com.example.IotProject.repository.DeviceRepository;
+import com.example.IotProject.repository.ManagementRepository;
+import com.example.IotProject.repository.UserRepository;
 import com.example.IotProject.repository.ZoneRepository;
 import com.example.IotProject.service.adafruitService.AdaFruitClientServiceHTTP;
 import com.example.IotProject.service.adafruitService.AdafruitClientServiceMQTT;
@@ -17,29 +21,39 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
 public class DeviceService {
     private final DeviceRepository deviceRepository;
     private final ZoneRepository zoneRepository;
+    private final UserRepository userRepository;
     private final AdaFruitClientServiceHTTP adaFruitServiceHTTP;
     private final AdafruitClientServiceMQTT mqttServiceMQTT;
     private final String userName;
+    private final UserService userService;
+    private final ManagementRepository managementRepository;
 
     @Autowired
     public DeviceService(
             DeviceRepository deviceRepository,
             ZoneRepository zoneRepository,
+            ManagementRepository managementRepository,
+            UserRepository userRepository,
             AdaFruitClientServiceHTTP adaFruitServiceHTTP,
             AdafruitClientServiceMQTT mqttServiceMQTT,
-            @Value("${mqtt.username}") String userName
+            @Value("${mqtt.username}") String userName,
+            UserService userService
     ) {
         this.deviceRepository = deviceRepository;
         this.zoneRepository = zoneRepository;
+        this.managementRepository = managementRepository;
+        this.userRepository = userRepository;
         this.adaFruitServiceHTTP = adaFruitServiceHTTP;
         this.mqttServiceMQTT = mqttServiceMQTT;
         this.userName = userName;
+        this.userService = userService;
     }
 
     private Map<String, Object> parseJson(String jsonString) {
@@ -54,22 +68,22 @@ public class DeviceService {
     private String createFeedName(DeviceSubType subType, Long zoneId) {
         switch (subType) {
             case PUMP -> {
-                return zoneId + "_pump";
+                return "pump-" + zoneId;
             }
             case SERVO -> {
-                return zoneId + "_servo";
+                return "servo-" + zoneId;
             }
             case TEMPERATURE -> {
-                return "temperature_" + zoneId;
+                return "temp-" + zoneId;
             }
             case HUMIDITY -> {
-                return "humidity_" + zoneId;
+                return "airm-" + zoneId;
             }
             case SOIL_MOISTURE -> {
-                return "soil_" + zoneId;
+                return "soil-" + zoneId;
             }
             case LIGHT -> {
-                return "light_" + zoneId;
+                return "light-" + zoneId;
             }
         }
         return null;
@@ -81,7 +95,6 @@ public class DeviceService {
         // TODO: Check if the zone for the device exists
         ZoneModel zone = zoneRepository.findById((createDeviceDTO.getZoneId())).
                 orElseThrow(() -> new ZoneNotFoundException("Zone not found with id: " + createDeviceDTO.getZoneId()));
-
         // TODO: Create the feed of the device in AdaFruit
         String response = adaFruitServiceHTTP.createFeed(userName, createFeedName(createDeviceDTO.getSubType(), createDeviceDTO.getZoneId()));
         Map<String, Object> responseJSON = parseJson(response);
@@ -92,7 +105,6 @@ public class DeviceService {
             2. The feed name is invalid
              */
         }
-
         // TODO: Create and save the device to the database
         DeviceModel device = new DeviceModel();
         device.setDeviceName(createDeviceDTO.getDeviceName());
@@ -103,7 +115,21 @@ public class DeviceService {
         device.setCreatedAt(java.time.LocalDateTime.now());
         device.setZone(zone);
 
+        // TODO: Add the device to management of the current user
+        ManagementModel management = new ManagementModel();
+        management.setDevice(device);
+        UserModel user = userService.getCurrentUser();
+        management.setUser(user);
+
+        // Save the management, device and user to the database
         deviceRepository.save(device);
+        userRepository.save(user);
+        managementRepository.save(management);
+
+
+
+
+
 
         // TODO: Start listen to the feed of the device
         mqttServiceMQTT.listenToFeed(device.getFeedName());
@@ -119,5 +145,9 @@ public class DeviceService {
         deviceInfoDTO.setZoneId(device.getZone().getId());
 
         return deviceInfoDTO;
+    }
+
+    public DeviceModel findByFeed(String feedName){
+        return deviceRepository.findByFeedName(feedName);
     }
 }

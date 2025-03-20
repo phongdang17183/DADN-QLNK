@@ -1,4 +1,4 @@
-package com.example.IotProject.config;
+package com.example.IotProject.config.securityConfig;
 
 import java.util.Arrays;
 import java.util.List;

@@ -2,12 +2,15 @@ package com.example.IotProject.service;
 
 import java.util.List;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.example.IotProject.exception.DataNotFoundException;
 import com.example.IotProject.exception.ExistUsernameException;
 import com.example.IotProject.model.UserModel;
 import com.example.IotProject.repository.UserRepository;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Service
 public class UserService implements IUserService {
@@ -51,4 +54,26 @@ public class UserService implements IUserService {
     public List<UserModel> getAllUser() {
         return userRepository.findAll();
     }
+
+    @Override
+    public List<UserModel> getUserByRole(String role) {
+        return userRepository.findByRole(role);
+    }
+
+    public UserModel getCurrentUser() {
+        return userRepository.findByUsername(getCurrentUserName()).orElseThrow(() ->
+            new DataNotFoundException("User not found"));
+    }
+
+    private String getCurrentUserName() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof UserDetails) {
+            return ((UserDetails) principal).getUsername();
+        } else {
+            return principal.toString();
+        }
+
+    }
+
 }

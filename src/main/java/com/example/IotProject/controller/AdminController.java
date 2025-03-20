@@ -35,6 +35,12 @@ public class AdminController {
     }
 
     @PreAuthorize("hasRole('ROLE_Admin')")
+    @GetMapping("/users/role/{role}")
+    public ResponseEntity<List<UserModel>> getUserByRole(@PathVariable String role) {
+        return ResponseEntity.ok(userService.getUserByRole(role));
+    }
+
+    @PreAuthorize("hasRole('ROLE_Admin')")
     @GetMapping("/users/{id}")
     public ResponseEntity<UserModel> getUserById(@PathVariable Long id) {
         return ResponseEntity.ok(userService.getUserById(id));
