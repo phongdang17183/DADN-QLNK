@@ -35,4 +35,6 @@ public class DeviceDataService {
         return deviceDataRepository.findByDevice_feedName(feedName);
     }
 
+
+
 }

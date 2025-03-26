@@ -26,7 +26,7 @@ public class MqttOutboundConfig {
 
     @Bean
     @ServiceActivator(inputChannel = "mqttOutboundChannel")
-    public MessageHandler mqttOutbound(MqttPahoClientFactory mqttClientFactory) {
+    public MqttPahoMessageHandler mqttOutbound(MqttPahoClientFactory mqttClientFactory) {
         String CLIENT_ID = "mqtt-handler" ;
         MqttPahoMessageHandler handler = new MqttPahoMessageHandler(CLIENT_ID, mqttClientFactory);
         handler.setAsync(true);
@@ -35,9 +35,4 @@ public class MqttOutboundConfig {
         return handler;
     }
 
-//     Expose the handler as a bean so it can be injected elsewhere
-    @Bean
-    public MqttPahoMessageHandler mqttMessageHandler(MqttPahoClientFactory mqttClientFactory) {
-        return (MqttPahoMessageHandler) mqttOutbound(mqttClientFactory);
-    }
 }

@@ -16,7 +16,7 @@ public class DeviceDataDTO {
 
     @Override
     public String toString() {
-        return "DataResponse{" +
+        return "DeviceDataDTO{" +
                 "feedName='" + feedName + '\'' +
                 ", timestamp=" + timestamp +
                 ", value=" + value +
