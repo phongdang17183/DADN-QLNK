@@ -1,47 +1,44 @@
 package com.example.IotProject.service.adafruitService;
-
-
-
-
+import com.example.IotProject.component.event.MQTTMessageReceivedEvent;
 import com.example.IotProject.config.adaFruitMQTT.AdaFruitMqttConfig;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.integration.core.MessageProducer;
 import org.springframework.integration.mqtt.inbound.MqttPahoMessageDrivenChannelAdapter;
 import org.springframework.integration.mqtt.outbound.MqttPahoMessageHandler;
-import org.springframework.messaging.MessageChannel;
-import org.springframework.messaging.MessageHandler;
+import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+
+import java.sql.Timestamp;
 
 
 @Service
 
 public class AdafruitClientServiceMQTT {
 
-    private final MessageHandler messageHandler;
-
     // Inbound
     private MqttPahoMessageDrivenChannelAdapter mqttInbound;
 
     // Outbound
-    private MqttPahoMessageHandler mqttMessageHandler;
+    private MqttPahoMessageHandler mqttOutbound;
 
     AdaFruitMqttConfig adaFruitMqttConfig;
+    ApplicationEventPublisher eventPublisher;
 
     @Autowired
     public AdafruitClientServiceMQTT(
             @Qualifier("mqttInbound") MessageProducer mqttInbound,
-            @Qualifier("mqttOutbound") MessageHandler messageHandler,
-            @Qualifier("mqttMessageHandler") MqttPahoMessageHandler mqttMessageHandler,
-            AdaFruitMqttConfig adaFruitMqttConfig
+            @Qualifier("mqttOutbound") MqttPahoMessageHandler mqttOutbound,
+            AdaFruitMqttConfig adaFruitMqttConfig,
+            ApplicationEventPublisher eventPublisher
     ) {
         this.mqttInbound = (MqttPahoMessageDrivenChannelAdapter) mqttInbound;
+        this.mqttOutbound = mqttOutbound;
         this.adaFruitMqttConfig = adaFruitMqttConfig;
-        this.messageHandler = messageHandler;
-        this.mqttMessageHandler = mqttMessageHandler;
+        this.eventPublisher = eventPublisher;
     }
 
     // TODO: Use feedkey to generate topic name and subscribe to that topic
@@ -52,30 +49,43 @@ public class AdafruitClientServiceMQTT {
         mqttInbound.addTopic(topic);
     }
 
+    //Inbound
+    @Async
+    public void processMessage(Message<?> message){
+        System.out.println("Received message details----------------------------------------------------------");
+        System.out.println("Payload: " + message.getPayload());
+        System.out.println("Headers: " + message.getHeaders());
+
+        String topic = message.getHeaders().get("mqtt_receivedTopic").toString();
+        int index = topic.lastIndexOf("/");
+        if(index != -1 && index < topic.length() - 1) {
+            String feedName = topic.substring(index + 1);
+            Float value = Float.parseFloat(message.getPayload().toString());
+            Timestamp now = new Timestamp(System.currentTimeMillis());
+
+            MQTTMessageReceivedEvent event = new MQTTMessageReceivedEvent(feedName, now, value);
+            eventPublisher.publishEvent(event);
+
+        } else {
+            System.out.println("Invalid topic format: " + topic);
+        }
+    }
+
     // Outbound
     private void updateTopic(String newTopic) {
-        mqttMessageHandler.setDefaultTopic(newTopic);
+        mqttOutbound.setDefaultTopic(newTopic);
     }
 
     // Outbound
     public void publishMessage(Float message, String topic) {
         String userName = adaFruitMqttConfig.getUSERNAME();
         topic = userName + "/feeds/" + topic;
-
         updateTopic(topic);
         Long value = message.longValue();
-
-
-        messageHandler.handleMessage(MessageBuilder.withPayload(value.toString()).build());
+        mqttOutbound.handleMessage(MessageBuilder.withPayload(value.toString()).build());
     }
 
 
-
-
-//    // Outbound
-//    public String getCurrentTopic() {
-//        return mqttMessageHandler
-//    }
 }
 
 
