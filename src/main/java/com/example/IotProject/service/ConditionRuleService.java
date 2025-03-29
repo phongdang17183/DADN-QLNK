@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.IotProject.model.ConditionRuleModel;
 import com.example.IotProject.repository.ConditionRuleRepository;
+import com.example.IotProject.response.ConditionRuleResponse;
 
 
 @Service
@@ -25,9 +26,13 @@ public class ConditionRuleService {
     }
 
 
-    @Cacheable(value = "rulesCache", key = "#conditionRuleId")
-    public List<ConditionRuleModel> getRulesFromDatabase() {
-        return conditionRuleRepository.findAll();
+    @Cacheable(value = "rulesCache", key = "'allRules'")
+    public List<ConditionRuleResponse> getRulesFromDatabase() {
+        List<ConditionRuleModel> conditionRuleModels = conditionRuleRepository.findAll();
+        List<ConditionRuleResponse> conditionRuleResponses = conditionRuleModels.stream()
+                .map(conditionRuleModel -> new ConditionRuleResponse(conditionRuleModel.getId(), conditionRuleModel.getName(), conditionRuleModel.getRelational_operator(), conditionRuleModel.getValue()))
+                .toList();
+        return conditionRuleResponses;
     }
 
     @CachePut(value = "rulesCache", key = "#result.id")
@@ -37,6 +42,18 @@ public class ConditionRuleService {
     @CacheEvict(value = "rulesCache", key = "#conditionRuleModel.id")
     public void deleteRule(ConditionRuleModel conditionRuleModel) {
         conditionRuleRepository.delete(conditionRuleModel);
+    }
+
+    public List<ConditionRuleResponse> getRules() {
+        Cache cache = cacheManager.getCache("rulesCache");
+        if (cache != null) {
+            // Lấy cache theo key đã chỉ định trong @Cacheable
+            List<ConditionRuleResponse> rules = cache.get("allRules", List.class); 
+            if (rules != null) {
+                return rules;
+            }
+        }
+        return null;
     }
     
 

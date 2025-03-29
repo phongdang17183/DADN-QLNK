@@ -1,37 +1,22 @@
 package com.example.IotProject.config;
 
-
-
-import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.cache.RedisCacheConfiguration;
-import org.springframework.data.redis.cache.RedisCacheManager;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.RedisSerializationContext;
-
-import com.example.IotProject.model.ConditionRuleModel;
-
+import com.github.benmanes.caffeine.cache.Caffeine;
 
 @Configuration
 public class CacheConfig {
+
     @Bean
-    public RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory) {
-        RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig()
-                .entryTtl(Duration.ofMinutes(10)) // Set default TTL for all caches
-                .disableCachingNullValues()
-                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new Jackson2JsonRedisSerializer<>(ConditionRuleModel.class)));
-
-        return RedisCacheManager
-                .builder(connectionFactory)
-                .cacheDefaults(redisCacheConfiguration)
-                .build();
-
-        
-        
+    public CacheManager cacheManager() {
+        CaffeineCacheManager cacheManager = new CaffeineCacheManager();
+        cacheManager.setCaffeine(Caffeine.newBuilder()
+                .expireAfterWrite(1, TimeUnit.HOURS)  // Thời gian cache sẽ hết hạn sau 1 giờ
+                .maximumSize(1000));  // Giới hạn kích thước cache
+        return cacheManager;
     }
 }
