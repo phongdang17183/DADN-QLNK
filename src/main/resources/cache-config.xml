@@ -1,0 +1,7 @@
+<config xmlns="http://www.hazelcast.com/schema/config">
+    <map name="default">
+        <max-idle-seconds>300</max-idle-seconds>
+        <time-to-live-seconds>3600</time-to-live-seconds>
+        <backup-count>1</backup-count>
+    </map>
+</config>
