@@ -25,4 +25,9 @@ public class RuleModel {
     @ManyToOne
     @JoinColumn(name = "created_by")
     private UserModel user;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+    }
 }
