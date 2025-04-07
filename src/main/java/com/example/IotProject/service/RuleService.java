@@ -66,4 +66,13 @@ public class RuleService {
     public List<RuleModel> getAllRules() {
         return ruleRepository.findAll();
     }
+
+    public List<RuleModel> getRulesbyDevice(String feedname){
+        List<RuleModel> rules = ruleRepository.findRulesByDeviceId(feedname);
+
+        if (rules == null || rules.isEmpty()) {
+            throw new RuntimeException("No rule found with device_id = " + feedname);
+        }
+        return rules;
+    }
 }

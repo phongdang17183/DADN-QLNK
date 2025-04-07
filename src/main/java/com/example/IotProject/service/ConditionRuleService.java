@@ -108,4 +108,13 @@ public class ConditionRuleService {
             cache.put(conditionRuleModel.getId(), conditionRuleResponse);
         }
     }
+
+    public List<ConditionRuleModel> getConditionByRule(Long rule_id){
+        List<ConditionRuleModel> conditionRuleModels = conditionRuleRepository.findByRuleId(rule_id);
+        if (conditionRuleModels == null || conditionRuleModels.isEmpty()) {
+            throw new RuntimeException("No condition found for rule_id: " + rule_id);
+        }
+        return conditionRuleModels;
+
+    }
 }

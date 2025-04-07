@@ -17,4 +17,7 @@ public interface ConditionRuleRepository extends JpaRepository<ConditionRuleMode
     boolean existsByNameAndRelationalOperatorAndValue(@Param("name") String name,
                                                         @Param("relational_operator") RuleOperator relational_operator,
                                                         @Param("value") String value);
+
+    @Query("SELECT c FROM ConditionRuleModel c WHERE c.rule.id = :ruleId")
+    List<ConditionRuleModel> findByRuleId(@Param("ruleId") Long ruleId);
 }

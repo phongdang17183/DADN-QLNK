@@ -1,6 +1,7 @@
 package com.example.IotProject.config.adaFruitMQTT;
 
 
+import com.example.IotProject.enums.DeviceType;
 import com.example.IotProject.model.DeviceModel;
 import com.example.IotProject.repository.DeviceRepository;
 
@@ -50,7 +51,7 @@ public class MqttInboundConfig {
                 new MqttPahoMessageDrivenChannelAdapter(CLIENT_ID_INBOUND, mqttClientFactory);
 
         // TODO: Get list of feedkeys from device table and subscribe to those topics
-        List<String> feedKeys = deviceRepository.findAll().stream()
+        List<String> feedKeys = deviceRepository.findByType(DeviceType.SENSOR).stream()
                 .map(DeviceModel::getFeedName)
                 .collect(Collectors.toList());
 
