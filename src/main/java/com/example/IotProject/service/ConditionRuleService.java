@@ -33,23 +33,23 @@ public class ConditionRuleService {
         List<ConditionRuleModel> conditionRuleModels = conditionRuleRepository.findAll();
         List<ConditionRuleResponse> conditionRuleResponses = conditionRuleModels.stream()
                 .map(conditionRuleModel -> new ConditionRuleResponse(
-                    conditionRuleModel.getId(), 
-                    conditionRuleModel.getName(), 
-                    conditionRuleModel.getRelational_operator(), 
+                    conditionRuleModel.getId(),
+                    conditionRuleModel.getName(),
+                    conditionRuleModel.getRelational_operator(),
                     conditionRuleModel.getValue()))
                 .toList();
         return conditionRuleResponses;
     }
-    
+
     public ConditionRuleResponse getRuleById(Long id) {
         ConditionRuleModel conditionRuleModel = conditionRuleRepository.findById(id).orElseThrow(() -> new RuntimeException("Condition rule not found"));
         return new ConditionRuleResponse(
-            conditionRuleModel.getId(), 
-            conditionRuleModel.getName(), 
-            conditionRuleModel.getRelational_operator(), 
+            conditionRuleModel.getId(),
+            conditionRuleModel.getName(),
+            conditionRuleModel.getRelational_operator(),
             conditionRuleModel.getValue());
     }
-    
+
     @CacheEvict(value = "rulesCache", key = "'all'")
     public void deleteRule(Long id ) {
         conditionRuleRepository.deleteById(id);
@@ -57,8 +57,8 @@ public class ConditionRuleService {
     @CacheEvict(value = "rulesCache", key = "'all'")
     public void addRule(ConditionRuleDTO conditionRuleDTO) {
         if (conditionRuleRepository.existsByNameAndRelationalOperatorAndValue(
-            conditionRuleDTO.getName(), 
-            conditionRuleDTO.getRelational_operator(), 
+            conditionRuleDTO.getName(),
+            conditionRuleDTO.getRelational_operator(),
             conditionRuleDTO.getValue())) {
             throw new RuntimeException("Condition rule already exists with the same name, relational operator, and value.");
         }
@@ -72,14 +72,14 @@ public class ConditionRuleService {
         }
         conditionRuleModel.setRule(ruleModel);
         conditionRuleModel = conditionRuleRepository.save(conditionRuleModel);
- 
+
         if (conditionRuleModel.getId() == null) {
             throw new RuntimeException("Failed to save ConditionRuleModel, id is null");
         }
         ConditionRuleResponse conditionRuleResponse = new ConditionRuleResponse(
-            conditionRuleModel.getId(), 
-            conditionRuleModel.getName(), 
-            conditionRuleModel.getRelational_operator(), 
+            conditionRuleModel.getId(),
+            conditionRuleModel.getName(),
+            conditionRuleModel.getRelational_operator(),
             conditionRuleModel.getValue()
         );
         Cache cache = cacheManager.getCache("rulesCache");
@@ -88,7 +88,7 @@ public class ConditionRuleService {
         }
         return;
     }
-    
+
 
     @CacheEvict(value = "rulesCache", key = "'all'")
     public void updateRule(Long id, ConditionRuleDTO conditionRuleDTO) {
@@ -99,9 +99,9 @@ public class ConditionRuleService {
         System.out.println(conditionRuleModel);
         conditionRuleRepository.save(conditionRuleModel);
         ConditionRuleResponse conditionRuleResponse = new ConditionRuleResponse(
-            conditionRuleModel.getId(), 
-            conditionRuleModel.getName(), 
-            conditionRuleModel.getRelational_operator(), 
+            conditionRuleModel.getId(),
+            conditionRuleModel.getName(),
+            conditionRuleModel.getRelational_operator(),
             conditionRuleModel.getValue());
         Cache cache = cacheManager.getCache("rulesCache");
         if (cache != null) {

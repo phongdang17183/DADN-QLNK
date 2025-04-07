@@ -43,7 +43,7 @@ public class RuleService {
         } else {
             throw new RuntimeException("Rule not found with id: " + id);
         }
-        
+
     }
     public void deleteRule(Long id) {
         // Logic to delete a rule

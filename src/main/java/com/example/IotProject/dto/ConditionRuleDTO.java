@@ -1,5 +1,6 @@
 package com.example.IotProject.dto;
 
+import com.example.IotProject.enums.RuleOperator;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ConditionRuleDTO {
     private String name;
-    private String relational_operator;
+    private RuleOperator relational_operator;
     private String value;
     private Long ruleId;
 }

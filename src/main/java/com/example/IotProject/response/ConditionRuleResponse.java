@@ -1,19 +1,17 @@
 package com.example.IotProject.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.example.IotProject.enums.RuleOperator;
+import lombok.*;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class ConditionRuleResponse {
-    Long id;
-    String name;
-    String relational_operator;
-    String value;
+    private Long id;
+    private String name;
+    private RuleOperator relational_operator;
+    private String value;
 }
