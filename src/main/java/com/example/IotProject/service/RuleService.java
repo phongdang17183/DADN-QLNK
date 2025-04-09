@@ -71,7 +71,8 @@ public class RuleService {
         List<RuleModel> rules = ruleRepository.findRulesByDeviceId(feedname);
 
         if (rules == null || rules.isEmpty()) {
-            throw new RuntimeException("No rule found with device_id = " + feedname);
+            System.out.println("No rule found with device_id = " + feedname);
+//            throw new RuntimeException("No rule found with device_id = " + feedname);
         }
         return rules;
     }

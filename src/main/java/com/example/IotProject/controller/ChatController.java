@@ -17,7 +17,6 @@ public class ChatController {
     }
 
     @MessageMapping("/chat") // Client gửi đến "/app/chat"
-//    @SendTo("/topic/messages") // Server gửi đến "/topic/messages"
     public DeviceDataDTO handleChatMessage(DeviceDataDTO message) {
 
         System.out.println(message);

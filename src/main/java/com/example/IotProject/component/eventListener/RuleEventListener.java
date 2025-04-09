@@ -103,11 +103,11 @@ public class RuleEventListener {
             if (parts.length == 2) {
                 String feedName = parts[0];
                 if ("on".equals(parts[1])){
-                    adafruitClientServiceMQTT.publishMessage(1.0f, feedName);
+                    adafruitClientServiceMQTT.publishMessage(2.0f, feedName);
                 } else if ("off".equals(parts[1]) ){
-                    adafruitClientServiceMQTT.publishMessage(0.0f, feedName);
+                    adafruitClientServiceMQTT.publishMessage(1.0f, feedName);
                 }
-
+            // notificate
             } else {
                 System.out.println("Action không đúng định dạng <feed>/<value>");
             }
