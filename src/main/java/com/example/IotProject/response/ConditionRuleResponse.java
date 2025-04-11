@@ -1,6 +1,7 @@
 package com.example.IotProject.response;
 
-import com.example.IotProject.enums.RuleOperator;
+import java.time.LocalDateTime;
+
 import lombok.*;
 
 @Data
@@ -12,6 +13,8 @@ import lombok.*;
 public class ConditionRuleResponse {
     private Long id;
     private String name;
-    private RuleOperator relational_operator;
-    private String value;
+    private String minValue;
+    private String maxValue;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
 }

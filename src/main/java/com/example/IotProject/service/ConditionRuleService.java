@@ -35,8 +35,11 @@ public class ConditionRuleService {
                 .map(conditionRuleModel -> new ConditionRuleResponse(
                     conditionRuleModel.getId(),
                     conditionRuleModel.getName(),
-                    conditionRuleModel.getRelational_operator(),
-                    conditionRuleModel.getValue()))
+                    conditionRuleModel.getMinValue(),
+                    conditionRuleModel.getMaxValue(),
+                    conditionRuleModel.getStartDate(),
+                    conditionRuleModel.getEndDate()
+                    ))
                 .toList();
         return conditionRuleResponses;
     }
@@ -46,8 +49,10 @@ public class ConditionRuleService {
         return new ConditionRuleResponse(
             conditionRuleModel.getId(),
             conditionRuleModel.getName(),
-            conditionRuleModel.getRelational_operator(),
-            conditionRuleModel.getValue());
+            conditionRuleModel.getMinValue(),
+            conditionRuleModel.getMaxValue(),
+            conditionRuleModel.getStartDate(),
+            conditionRuleModel.getEndDate());
     }
 
     @CacheEvict(value = "rulesCache", key = "'all'")
@@ -56,16 +61,19 @@ public class ConditionRuleService {
     }
     @CacheEvict(value = "rulesCache", key = "'all'")
     public void addRule(ConditionRuleDTO conditionRuleDTO) {
-        if (conditionRuleRepository.existsByNameAndRelationalOperatorAndValue(
-            conditionRuleDTO.getName(),
-            conditionRuleDTO.getRelational_operator(),
-            conditionRuleDTO.getValue())) {
+        if (conditionRuleRepository.existsByMinValueAndMaxValueAndStartDateAndEndDate(
+                conditionRuleDTO.getName(),
+                conditionRuleDTO.getMinValue(),
+                conditionRuleDTO.getMaxValue(),
+                conditionRuleDTO.getStartDate(),
+                conditionRuleDTO.getEndDate())) {
             throw new RuntimeException("Condition rule already exists with the same name, relational operator, and value.");
         }
         ConditionRuleModel conditionRuleModel = new ConditionRuleModel();
         conditionRuleModel.setName(conditionRuleDTO.getName());
-        conditionRuleModel.setRelational_operator(conditionRuleDTO.getRelational_operator());
-        conditionRuleModel.setValue(conditionRuleDTO.getValue());
+        conditionRuleModel.setMinValue(conditionRuleDTO.getMinValue());
+        conditionRuleModel.setMaxValue(conditionRuleDTO.getMaxValue());
+        conditionRuleModel.setStartDate(conditionRuleDTO.getStartDate());
         RuleModel ruleModel = ruleService.getRuleById(conditionRuleDTO.getRuleId());
         if (ruleModel == null) {
             throw new RuntimeException("Rule not found with id: " + conditionRuleDTO.getRuleId());
@@ -79,8 +87,10 @@ public class ConditionRuleService {
         ConditionRuleResponse conditionRuleResponse = new ConditionRuleResponse(
             conditionRuleModel.getId(),
             conditionRuleModel.getName(),
-            conditionRuleModel.getRelational_operator(),
-            conditionRuleModel.getValue()
+            conditionRuleModel.getMinValue(),
+            conditionRuleModel.getMaxValue(),
+            conditionRuleModel.getStartDate(),
+            conditionRuleModel.getEndDate()
         );
         Cache cache = cacheManager.getCache("rulesCache");
         if (cache != null) {
@@ -94,15 +104,20 @@ public class ConditionRuleService {
     public void updateRule(Long id, ConditionRuleDTO conditionRuleDTO) {
         ConditionRuleModel conditionRuleModel = conditionRuleRepository.findById(id).orElseThrow(() -> new RuntimeException("Condition rule not found"));
         conditionRuleModel.setName(conditionRuleDTO.getName());
-        conditionRuleModel.setRelational_operator(conditionRuleDTO.getRelational_operator());
-        conditionRuleModel.setValue(conditionRuleDTO.getValue());
+        conditionRuleModel.setMinValue(conditionRuleDTO.getMinValue());
+        conditionRuleModel.setMaxValue(conditionRuleDTO.getMaxValue());
+        conditionRuleModel.setStartDate(conditionRuleDTO.getStartDate());
+        conditionRuleModel.setEndDate(conditionRuleDTO.getEndDate());
+        
         System.out.println(conditionRuleModel);
         conditionRuleRepository.save(conditionRuleModel);
         ConditionRuleResponse conditionRuleResponse = new ConditionRuleResponse(
             conditionRuleModel.getId(),
             conditionRuleModel.getName(),
-            conditionRuleModel.getRelational_operator(),
-            conditionRuleModel.getValue());
+            conditionRuleModel.getMinValue(),
+            conditionRuleModel.getMaxValue(),
+            conditionRuleModel.getStartDate(),
+            conditionRuleModel.getEndDate());
         Cache cache = cacheManager.getCache("rulesCache");
         if (cache != null) {
             cache.put(conditionRuleModel.getId(), conditionRuleResponse);

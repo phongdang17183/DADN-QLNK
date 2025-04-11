@@ -1,5 +1,7 @@
 package com.example.IotProject.model;
 
+import java.time.LocalDateTime;
+
 import com.example.IotProject.enums.RuleOperator;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -15,10 +17,11 @@ public class ConditionRuleModel {
     private Long id;
 
     private String name;
+    private String minValue;
+    private String maxValue;
 
-    @Enumerated(EnumType.STRING)
-    private RuleOperator relational_operator;
-    private String value;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
 
     @ManyToOne
     @JoinColumn(name = "rule_id")
