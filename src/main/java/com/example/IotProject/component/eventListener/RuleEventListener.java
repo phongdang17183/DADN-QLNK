@@ -14,6 +14,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Component
@@ -59,10 +60,11 @@ public class RuleEventListener {
                     return;
                 }
 
-                boolean isSatisfied = true;
+                boolean isSatisfied = false;
                 for (ConditionRuleModel cond : conditions) {
-                    if (!checkCondition(data, cond.getRelational_operator(), cond.getValue())) {
-                        isSatisfied = false;
+                    System.out.println(">>> Checking condition: " + cond.getName() + " with value: " + data);
+                    if (checkCondition(data, cond.getMinValue(), cond.getMaxValue(), cond.getStartDate(), cond.getEndDate())) {
+                        isSatisfied = true;
                         break;
                     }
                 }
@@ -77,18 +79,26 @@ public class RuleEventListener {
     }
 
     // Hàm check operator (>, <, >=, <=, = ...)
-    private boolean checkCondition(Float actualValue, RuleOperator operator, String thresholdStr) {
+    private boolean checkCondition(Float actualValue ,String minValue, String maxValue, LocalDateTime startDate, LocalDateTime endDate) {
         if (actualValue == null) return false;
-        float threshold = Float.parseFloat(thresholdStr);
+        Float fMinValue = Float.parseFloat(minValue);
+        Float fMaxValue = Float.parseFloat(maxValue);
+        LocalDateTime now = LocalDateTime.now();
+        if (startDate != null && endDate != null) {
+            if (now.isBefore(startDate) || now.isAfter(endDate)) {
+                return false; // Không nằm trong khoảng thời gian quy định
+            }
+        }
+        return actualValue >= fMinValue && actualValue <= fMaxValue;
 
-        return switch (operator) {
-            case GREATER -> actualValue > threshold;
-            case GREATEREQUAL -> actualValue >= threshold;
-            case LESS -> actualValue < threshold;
-            case LESSEQUAL -> actualValue <= threshold;
-            case EQUAL -> actualValue.equals(threshold);
-            default -> false;
-        };
+        // return switch (operator) {
+        //     case GREATER -> actualValue > threshold;
+        //     case GREATEREQUAL -> actualValue >= threshold;
+        //     case LESS -> actualValue < threshold;
+        //     case LESSEQUAL -> actualValue <= threshold;
+        //     case EQUAL -> actualValue.equals(threshold);
+        //     default -> false;
+        // };
     }
 
 

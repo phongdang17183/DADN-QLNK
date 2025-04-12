@@ -67,18 +67,26 @@ public class ConditionRuleService {
                 conditionRuleDTO.getMaxValue(),
                 conditionRuleDTO.getStartDate(),
                 conditionRuleDTO.getEndDate())) {
-            throw new RuntimeException("Condition rule already exists with the same name, relational operator, and value.");
+            throw new RuntimeException("Condition rule already exists.");
         }
         ConditionRuleModel conditionRuleModel = new ConditionRuleModel();
         conditionRuleModel.setName(conditionRuleDTO.getName());
         conditionRuleModel.setMinValue(conditionRuleDTO.getMinValue());
         conditionRuleModel.setMaxValue(conditionRuleDTO.getMaxValue());
         conditionRuleModel.setStartDate(conditionRuleDTO.getStartDate());
+        conditionRuleModel.setEndDate(conditionRuleDTO.getEndDate());
         RuleModel ruleModel = ruleService.getRuleById(conditionRuleDTO.getRuleId());
         if (ruleModel == null) {
             throw new RuntimeException("Rule not found with id: " + conditionRuleDTO.getRuleId());
         }
         conditionRuleModel.setRule(ruleModel);
+        // Save the condition rule to the database
+        System.out.println(conditionRuleModel.getName());
+        System.out.println(conditionRuleModel.getMinValue());
+        System.out.println(conditionRuleModel.getMaxValue());
+        System.out.println(conditionRuleModel.getStartDate());
+        System.out.println(conditionRuleModel.getEndDate());
+        System.out.println(conditionRuleModel.getRule().getId());
         conditionRuleModel = conditionRuleRepository.save(conditionRuleModel);
 
         if (conditionRuleModel.getId() == null) {

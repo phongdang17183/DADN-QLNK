@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.IotProject.dto.ConditionRuleDTO;
 import com.example.IotProject.service.ConditionRuleService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/v1/condition-rules")
 public class ConditionRuleController {
@@ -24,7 +26,7 @@ public class ConditionRuleController {
 
 
     @PostMapping("/create")
-    public ResponseEntity<?> createConditionRule(@RequestBody ConditionRuleDTO conditionRuleDTO) {
+    public ResponseEntity<?> createConditionRule(@Valid @RequestBody ConditionRuleDTO conditionRuleDTO) {
         conditionRuleService.addRule(conditionRuleDTO);
         return ResponseEntity.ok("Condition rule created successfully");
     }
