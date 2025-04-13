@@ -1,6 +1,7 @@
 package com.example.IotProject.component.eventListener;
 
 import com.example.IotProject.component.event.MQTTMessageReceivedEvent;
+import com.example.IotProject.enums.DeviceStatus;
 import com.example.IotProject.enums.RuleOperator;
 import com.example.IotProject.model.RuleModel;
 import com.example.IotProject.model.ConditionRuleModel;
@@ -10,6 +11,8 @@ import com.example.IotProject.service.DeviceService;
 import com.example.IotProject.service.RuleService;
 import com.example.IotProject.service.adafruitService.AdafruitClientServiceMQTT;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -101,6 +104,9 @@ public class RuleEventListener {
         // };
     }
 
+    
+
+
 
     private void doAction(RuleModel rule) {
 
@@ -112,9 +118,20 @@ public class RuleEventListener {
             String[] parts = action.split("/");
             if (parts.length == 2) {
                 String feedName = parts[0];
+                DeviceStatus status = deviceService.getStatusDevice(feedName);
                 if ("on".equals(parts[1])){
+                    // Nếu trạng thái hiện tại là ON thì không làm gì cả
+                    if (status == DeviceStatus.ENABLE) {
+                        System.out.println(">>> [ACTION] " + feedName + " is already ON, no action taken.");
+                        return;
+                    }
                     adafruitClientServiceMQTT.publishMessage(2.0f, feedName);
                 } else if ("off".equals(parts[1]) ){
+                    // Nếu trạng thái hiện tại là OFF thì không làm gì cả
+                    if (status == DeviceStatus.DISABLE) {
+                        System.out.println(">>> [ACTION] " + feedName + " is already OFF, no action taken.");
+                        return;
+                    }
                     adafruitClientServiceMQTT.publishMessage(1.0f, feedName);
                 }
             // notificate

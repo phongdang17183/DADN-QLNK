@@ -19,6 +19,8 @@ import com.example.IotProject.service.adafruitService.AdafruitClientServiceMQTT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -149,5 +151,35 @@ public class DeviceService {
 
     public DeviceModel findByFeed(String feedName){
         return deviceRepository.findByFeedName(feedName);
+    }
+    public void updateDevice(DeviceModel device) {
+        deviceRepository.save(device);
+    }
+    public List<DeviceModel> getAllDevices() {
+        return deviceRepository.findAll();
+    }
+
+    public DeviceModel getDeviceById(String id) {
+        return deviceRepository.findById(id).orElse(null);
+    }
+
+    public void deleteDevice(String id) {
+        deviceRepository.deleteById(id);
+    }
+
+    @Cacheable(value = "status_device" ,key="#feedName")
+    public DeviceStatus getStatusDevice(String feedName) {
+        DeviceModel device = findByFeed(feedName);
+        return device.getStatus();
+    }
+    @CacheEvict(value = "status_device", key = "#feedName")
+    public String updateStatusDevice(String feedName, DeviceStatus status) {
+        DeviceModel device = findByFeed(feedName);
+        if (device != null) {
+            device.setStatus(status);
+            updateDevice(device);
+            return "Device status updated successfully";
+        }
+        return "Device not found";
     }
 }

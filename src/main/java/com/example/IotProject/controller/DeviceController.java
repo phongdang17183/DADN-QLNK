@@ -2,6 +2,7 @@ package com.example.IotProject.controller;
 
 import com.example.IotProject.dto.deviceDTO.CreateDeviceDTO;
 import com.example.IotProject.dto.deviceDTO.DeviceInfoDTO;
+import com.example.IotProject.enums.DeviceStatus;
 import com.example.IotProject.service.DeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,5 +25,14 @@ public class DeviceController {
     public ResponseEntity<DeviceInfoDTO> addDeviceFeed(@RequestBody CreateDeviceDTO createDeviceDTO) {
         System.out.println("Add device controller here!!!");
         return ResponseEntity.ok(deviceService.addDeviceFeed(createDeviceDTO));
+    }
+
+    @GetMapping("/getStatus")
+    public ResponseEntity<?> getDeviceStatus(@RequestParam String feedName) {
+        return ResponseEntity.ok(deviceService.getStatusDevice(feedName));
+    }
+    @PutMapping("/updateStatus")
+    public ResponseEntity<?> updateDeviceStatus(@RequestParam String feedName, @RequestParam DeviceStatus status) {
+        return ResponseEntity.ok(deviceService.updateStatusDevice(feedName, status));
     }
 }
