@@ -16,7 +16,10 @@ public class DeviceDataService {
     private final DeviceRepository deviceRepository;
 
     @Autowired
-    public DeviceDataService(DeviceDataRepository deviceDataRepository, DeviceRepository deviceRepository) {
+    public DeviceDataService(
+            DeviceDataRepository deviceDataRepository,
+            DeviceRepository deviceRepository
+    ) {
         this.deviceDataRepository = deviceDataRepository;
         this.deviceRepository = deviceRepository;
     }
@@ -35,6 +38,10 @@ public class DeviceDataService {
         return deviceDataRepository.findByDevice_feedName(feedName);
     }
 
+    public List<DeviceDataModel> getAllZoneData(Long zoneId){
+        List<DeviceModel> devices = deviceRepository.findByZoneId(zoneId);
 
+        return deviceDataRepository.findByDevice_feedName("feedName");
+    }
 
 }

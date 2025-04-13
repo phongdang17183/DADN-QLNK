@@ -1,14 +1,14 @@
 package com.example.IotProject.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import com.example.IotProject.enums.RuleOperator;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -20,10 +20,14 @@ public class ConditionRuleModel {
     private Long id;
 
     private String name;
-    private String relational_operator;
-    private String value;
+    private String minValue;
+    private String maxValue;
+
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
 
     @ManyToOne
     @JoinColumn(name = "rule_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     RuleModel rule;
 }

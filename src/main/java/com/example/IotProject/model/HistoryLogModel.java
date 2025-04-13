@@ -1,27 +1,30 @@
 package com.example.IotProject.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
+import java.sql.Timestamp;
 
 @Entity
 @Getter
 @Setter
 @Table(name = "history_logs")
+@AllArgsConstructor
+@NoArgsConstructor
 public class HistoryLogModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "action", length = 20)
+
     private String action;
+
+    private Timestamp timestamp;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserModel user;
-
-    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
-    private List<DeviceLogModel> deviceLogs;
 
 }

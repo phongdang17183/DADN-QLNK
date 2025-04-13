@@ -17,6 +17,9 @@ public class WebSocketEventListener {
     @Async
     public void handleWebSocketEvent(MQTTMessageReceivedEvent event) {
         DeviceDataDTO data = new DeviceDataDTO(event.getFeedName(), event.getTimestamp(), event.getValue());
-        messagingTemplate.convertAndSend("/topic/messages", data);
+        String[] parts = event.getFeedName().split("-");
+        String topic = "/topic/" + parts[1];
+//        messagingTemplate.convertAndSend("/topic/messages", data);
+        messagingTemplate.convertAndSend(topic, data);
     }
 }

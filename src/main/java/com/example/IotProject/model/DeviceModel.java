@@ -6,6 +6,7 @@ import java.util.List;
 import com.example.IotProject.enums.DeviceStatus;
 import com.example.IotProject.enums.DeviceSubType;
 import com.example.IotProject.enums.DeviceType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -36,14 +37,18 @@ public class DeviceModel {
 
     @ManyToOne
     @JoinColumn(name = "zone_id")
+    @JsonIgnore
     private ZoneModel zone;
 
     @OneToMany(mappedBy = "device", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<DeviceLogModel> deviceLogs;
 
     @OneToMany(mappedBy = "device", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<RuleModel> rules;
 
     @OneToMany(mappedBy = "device", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<DeviceDataModel> deviceData;
 }

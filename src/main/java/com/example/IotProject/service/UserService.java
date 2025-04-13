@@ -35,6 +35,11 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public UserModel getUserByUsername(String username) {
+        return userRepository.findByUsername(username).orElseThrow(() ->
+                new DataNotFoundException("User not found with username: " + username));
+    }
+    @Override
     public UserModel updateUser(UserModel user) {
         if(!userRepository.existsById(user.getId())) {
             throw new DataNotFoundException("Cannot update. User not found with id: " + user.getId());

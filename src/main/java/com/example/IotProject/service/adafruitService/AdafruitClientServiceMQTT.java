@@ -41,14 +41,18 @@ public class AdafruitClientServiceMQTT {
         this.eventPublisher = eventPublisher;
     }
 
-    // TODO: Use feedkey to generate topic name and subscribe to that topic
     // Inbound
     public void listenToFeed(String feedKey) {
         String userName = adaFruitMqttConfig.getUSERNAME();
         String topic = userName + "/feeds/" + feedKey;
         mqttInbound.addTopic(topic);
     }
-
+    //Inbound
+    public void unlistenToFeed(String feedKey) {
+        String userName = adaFruitMqttConfig.getUSERNAME();
+        String topic = userName + "/feeds/" + feedKey;
+        mqttInbound.removeTopic(topic);
+    }
     //Inbound
     @Async
     public void processMessage(Message<?> message){

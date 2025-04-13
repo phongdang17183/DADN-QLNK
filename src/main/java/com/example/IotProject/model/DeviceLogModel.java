@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.sql.Timestamp;
+
 @Entity
 @Table(name = "device_logs")
 @Setter
@@ -14,10 +16,7 @@ public class DeviceLogModel {
     private Long id;
 
     private String action;
-
-    @ManyToOne
-    @JoinColumn(name = "history_log_id")
-    HistoryLogModel historyLog;
+    private Timestamp timestamp;
 
     @ManyToOne
     @JoinColumn(name = "device_id") // Removed referencedColumnName = "id"

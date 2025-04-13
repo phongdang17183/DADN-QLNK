@@ -2,27 +2,27 @@ package com.example.IotProject.service;
 
 import com.example.IotProject.dto.deviceDTO.CreateDeviceDTO;
 import com.example.IotProject.dto.deviceDTO.DeviceInfoDTO;
+import com.example.IotProject.dto.deviceDTO.DeviceStatusDTO;
 import com.example.IotProject.enums.DeviceStatus;
 import com.example.IotProject.enums.DeviceSubType;
 import com.example.IotProject.exception.CreateFeedFailedException;
 import com.example.IotProject.exception.ZoneNotFoundException;
-import com.example.IotProject.model.DeviceModel;
-import com.example.IotProject.model.ManagementModel;
-import com.example.IotProject.model.UserModel;
-import com.example.IotProject.model.ZoneModel;
-import com.example.IotProject.repository.DeviceRepository;
-import com.example.IotProject.repository.ManagementRepository;
-import com.example.IotProject.repository.UserRepository;
-import com.example.IotProject.repository.ZoneRepository;
+import com.example.IotProject.model.*;
+import com.example.IotProject.repository.*;
 import com.example.IotProject.service.adafruitService.AdaFruitClientServiceHTTP;
 import com.example.IotProject.service.adafruitService.AdafruitClientServiceMQTT;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.persistence.Cacheable;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class DeviceService {
@@ -34,6 +34,8 @@ public class DeviceService {
     private final String userName;
     private final UserService userService;
     private final ManagementRepository managementRepository;
+    private final HistoryLogService historyLogService;
+    private final AdafruitClientServiceMQTT adafruitClientServiceMQTT;
 
     @Autowired
     public DeviceService(
@@ -44,7 +46,9 @@ public class DeviceService {
             AdaFruitClientServiceHTTP adaFruitServiceHTTP,
             AdafruitClientServiceMQTT mqttServiceMQTT,
             @Value("${mqtt.username}") String userName,
-            UserService userService
+            UserService userService,
+            HistoryLogService historyLogService,
+            AdafruitClientServiceMQTT adafruitClientServiceMQTT
     ) {
         this.deviceRepository = deviceRepository;
         this.zoneRepository = zoneRepository;
@@ -54,6 +58,8 @@ public class DeviceService {
         this.mqttServiceMQTT = mqttServiceMQTT;
         this.userName = userName;
         this.userService = userService;
+        this.historyLogService = historyLogService;
+        this.adafruitClientServiceMQTT = adafruitClientServiceMQTT;
     }
 
     private Map<String, Object> parseJson(String jsonString) {
@@ -127,10 +133,6 @@ public class DeviceService {
         managementRepository.save(management);
 
 
-
-
-
-
         // TODO: Start listen to the feed of the device
         mqttServiceMQTT.listenToFeed(device.getFeedName());
 
@@ -149,5 +151,47 @@ public class DeviceService {
 
     public DeviceModel findByFeed(String feedName){
         return deviceRepository.findByFeedName(feedName);
+    }
+
+    public List<DeviceModel> findByZoneId(Long zoneId){
+        return deviceRepository.findByZoneId(zoneId);
+    }
+
+//    @Cacheable(value = "status_device" ,key="#feedName")
+    public DeviceStatus getStatusDevice(String feedName) {
+        DeviceModel device = findByFeed(feedName);
+        return device.getStatus();
+    }
+    @CacheEvict(value = "status_device", key = "#feedName")
+    public String updateStatusDevice(String feedName, DeviceStatus status) {        // for auto device
+        DeviceModel device = findByFeed(feedName);
+        if (device != null) {
+            device.setStatus(status);
+            deviceRepository.save(device);
+            return "Device status updated successfully";
+        }
+        return "Device not found";
+    }
+
+    public String device_status(DeviceStatusDTO deviceStatusDTO){                   // for user control device
+        DeviceModel device = deviceRepository.findByFeedName(deviceStatusDTO.getFeedName());
+        if (device == null) {
+            throw new RuntimeException("Device not found");
+        }
+        device.setStatus(deviceStatusDTO.getStatus());
+        deviceRepository.save(device);
+
+        if(deviceStatusDTO.getStatus() == DeviceStatus.ENABLE){
+            // subscribe feed
+            adafruitClientServiceMQTT.listenToFeed(deviceStatusDTO.getFeedName());
+        } else if (deviceStatusDTO.getStatus() == DeviceStatus.DISABLE) {
+            // unsubscribe feed
+            adafruitClientServiceMQTT.unlistenToFeed(deviceStatusDTO.getFeedName());
+        }
+
+        String action = deviceStatusDTO.getStatus()+ "/" + deviceStatusDTO.getFeedName();
+        historyLogService.logWSHistory(action, deviceStatusDTO.getUserName() , Timestamp.valueOf(java.time.LocalDateTime.now()) );
+
+        return "Status updated successfully";
     }
 }
