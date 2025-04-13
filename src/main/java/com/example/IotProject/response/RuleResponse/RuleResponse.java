@@ -1,4 +1,4 @@
-package com.example.IotProject.response;
+package com.example.IotProject.response.RuleResponse;
 
 import lombok.*;
 

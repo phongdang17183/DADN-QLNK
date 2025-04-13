@@ -1,5 +1,6 @@
 package com.example.IotProject.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,10 +22,8 @@ public class ConditionRuleController {
         this.conditionRuleService = conditionRuleService;
     }
 
-
-
     @PostMapping("/create")
-    public ResponseEntity<?> createConditionRule(@RequestBody ConditionRuleDTO conditionRuleDTO) {
+    public ResponseEntity<?> createConditionRule(@Valid @RequestBody ConditionRuleDTO conditionRuleDTO) {
         conditionRuleService.addRule(conditionRuleDTO);
         return ResponseEntity.ok("Condition rule created successfully");
     }
@@ -45,6 +44,7 @@ public class ConditionRuleController {
     public ResponseEntity<?> getAllConditionRules() {
         return ResponseEntity.ok(conditionRuleService.getAll());
     }
+
     @GetMapping("/getById")
     public ResponseEntity<?> getConditionRuleById(@RequestParam Long id) {
         return ResponseEntity.ok(conditionRuleService.getRuleById(id));

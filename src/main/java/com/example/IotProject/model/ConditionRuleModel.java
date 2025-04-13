@@ -4,6 +4,11 @@ import com.example.IotProject.enums.RuleOperator;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -15,12 +20,14 @@ public class ConditionRuleModel {
     private Long id;
 
     private String name;
+    private String minValue;
+    private String maxValue;
 
-    @Enumerated(EnumType.STRING)
-    private RuleOperator relational_operator;
-    private String value;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
 
     @ManyToOne
     @JoinColumn(name = "rule_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     RuleModel rule;
 }

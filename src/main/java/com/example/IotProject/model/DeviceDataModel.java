@@ -2,6 +2,8 @@ package com.example.IotProject.model;
 
 import java.sql.Timestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,6 +28,8 @@ public class DeviceDataModel {
 
     @ManyToOne
     @JoinColumn(name = "device_id")
+    @JsonIgnoreProperties
+    @JsonIgnore
     DeviceModel device;
 
 }

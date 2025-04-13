@@ -11,4 +11,5 @@ import java.util.List;
 public interface DeviceRepository extends JpaRepository<DeviceModel, String> {
     DeviceModel findByFeedName(String feedName);
     List<DeviceModel> findByType(DeviceType deviceType);
+    List<DeviceModel> findByZoneId(Long zoneId);
 }

@@ -2,12 +2,16 @@ package com.example.IotProject.component;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
 import javax.crypto.SecretKey;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -80,4 +84,12 @@ public class JwtTokenUtil {
         return (username.equals(user.getUsername()) && !isTokenExpired(token));
     }
 
+    public Authentication getAuthentication(String token) {
+        String username = extractUsername(token);
+        return new UsernamePasswordAuthenticationToken(
+                username,
+                null,
+                List.of(new SimpleGrantedAuthority("ROLE_Technician")) // hoặc đọc từ DB/token
+        );
+    }
 }

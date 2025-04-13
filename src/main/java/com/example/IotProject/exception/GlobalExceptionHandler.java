@@ -3,6 +3,7 @@ package com.example.IotProject.exception;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.example.IotProject.response.RestResponse;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.example.IotProject.response.RestResponse;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {

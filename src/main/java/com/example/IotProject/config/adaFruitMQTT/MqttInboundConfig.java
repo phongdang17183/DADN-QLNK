@@ -1,6 +1,7 @@
 package com.example.IotProject.config.adaFruitMQTT;
 
 
+import com.example.IotProject.enums.DeviceStatus;
 import com.example.IotProject.enums.DeviceType;
 import com.example.IotProject.model.DeviceModel;
 import com.example.IotProject.repository.DeviceRepository;

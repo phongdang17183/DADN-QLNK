@@ -1,15 +1,12 @@
 package com.example.IotProject.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
 import com.example.IotProject.dto.RuleDTO;
 import com.example.IotProject.model.RuleModel;
-import com.example.IotProject.repository.DeviceRepository;
 import com.example.IotProject.repository.RuleRepository;
-import com.example.IotProject.response.RuleResponse;
 
 @Service
 public class RuleService {

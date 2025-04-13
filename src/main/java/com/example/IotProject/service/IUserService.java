@@ -12,4 +12,5 @@ public interface IUserService {
     public void deleteUser(Long id);
     public UserModel getCurrentUser();
     public List<UserModel> getUserByRole(String role);
+    public UserModel getUserByUsername(String username);
 }
