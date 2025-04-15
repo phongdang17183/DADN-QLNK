@@ -81,10 +81,10 @@ public class AuthService implements IAuthService {
         // generate otp
         existingUser.setOtp(String.valueOf((int) (Math.random() * 900000) + 100000));
 
-        // send mail
-        emailService.sendEmail(new EmailDTO(resetPasswordDTO.getEmail(), "Reset Password",
-                "Your OTP is: " + existingUser.getOtp()));
-
+        // // send mail
+        // emailService.sendEmail(new EmailDTO(resetPasswordDTO.getEmail(), "Reset Password",
+        //         "Your OTP is: " + existingUser.getOtp()));
+        emailService.sendOTPEmail(existingUser.getFullName(), resetPasswordDTO.getEmail(), existingUser.getOtp());
         // update user
         userService.updateUser(existingUser);
     }
