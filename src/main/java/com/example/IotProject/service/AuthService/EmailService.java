@@ -1,4 +1,4 @@
-package com.example.IotProject.service;
+package com.example.IotProject.service.AuthService;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

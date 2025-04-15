@@ -2,7 +2,7 @@ package com.example.IotProject.controller;
 
 import java.util.List;
 
-import com.example.IotProject.service.UserService;
+import com.example.IotProject.service.UserService.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -16,7 +16,7 @@ import com.example.IotProject.dto.LoginDTO;
 import com.example.IotProject.dto.RegisterDTO;
 import com.example.IotProject.dto.ResetPasswordDTO;
 import com.example.IotProject.response.StringResponse;
-import com.example.IotProject.service.AuthService;
+import com.example.IotProject.service.AuthService.AuthService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

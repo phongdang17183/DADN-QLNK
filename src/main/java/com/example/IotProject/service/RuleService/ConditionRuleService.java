@@ -1,4 +1,4 @@
-package com.example.IotProject.service;
+package com.example.IotProject.service.RuleService;
 
 import java.util.List;
 import java.util.stream.Collectors;

@@ -1,5 +1,6 @@
 package com.example.IotProject.controller;
 
+import com.example.IotProject.service.RuleService.ConditionRuleService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.IotProject.dto.ConditionRuleDTO;
-import com.example.IotProject.service.ConditionRuleService;
 
 @RestController
 @RequestMapping("/api/v1/condition-rules")

@@ -1,6 +1,8 @@
 package com.example.IotProject.controller;
 
 import com.example.IotProject.response.RuleResponse.RuleAndConditionResponse;
+import com.example.IotProject.response.StringResponse;
+import com.example.IotProject.service.RuleService.ConditionRuleService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -8,8 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.IotProject.dto.RuleDTO;
 import com.example.IotProject.model.RuleModel;
 import com.example.IotProject.response.RuleResponse.RuleResponse;
-import com.example.IotProject.service.ConditionRuleService;
-import com.example.IotProject.service.RuleService;
+import com.example.IotProject.service.RuleService.RuleService;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,9 +33,9 @@ public class RuleController {
         this.ruleService = ruleService;
     }
     @PostMapping("/create")
-    public ResponseEntity<String> createRule(@RequestBody RuleDTO ruleDTO) {
+    public ResponseEntity<StringResponse> createRule(@RequestBody RuleDTO ruleDTO) {
         ruleService.createRule(ruleDTO);
-        return ResponseEntity.ok("Rule created successfully");
+        return ResponseEntity.ok(new StringResponse("Rule created successfully"));
     }
     @GetMapping("/getAll")
     public ResponseEntity<List<RuleResponse>> getAllRules() {
@@ -45,9 +46,9 @@ public class RuleController {
         return ResponseEntity.ok(ruleResponses);
     }
     @PutMapping("/update")
-    public ResponseEntity<String> updateRule(@RequestParam Long id, @RequestBody RuleDTO ruleDTO) {
+    public ResponseEntity<StringResponse> updateRule(@RequestParam Long id, @RequestBody RuleDTO ruleDTO) {
         ruleService.updateRule(id, ruleDTO);
-        return ResponseEntity.ok("Rule updated successfully");
+        return ResponseEntity.ok(new StringResponse("Rule updated successfully"));
     }
     @GetMapping("/getRuleById")
     public ResponseEntity<RuleResponse> getRuleById(@RequestParam Long id) {
@@ -61,9 +62,9 @@ public class RuleController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteRule(@RequestParam Long id) {
+    public ResponseEntity<StringResponse> deleteRule(@RequestParam Long id) {
         ruleService.deleteRule(id);
-        return ResponseEntity.ok("Rule deleted successfully");
+        return ResponseEntity.ok(new StringResponse("Rule deleted successfully"));
     }
 
     @GetMapping("/getRulesByDevice")

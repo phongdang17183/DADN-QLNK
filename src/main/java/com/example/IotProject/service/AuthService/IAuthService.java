@@ -1,4 +1,4 @@
-package com.example.IotProject.service;
+package com.example.IotProject.service.AuthService;
 
 import com.example.IotProject.dto.RegisterDTO;
 import com.example.IotProject.dto.ResetPasswordDTO;

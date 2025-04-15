@@ -1,8 +1,7 @@
 package com.example.IotProject.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.sql.Timestamp;
 
@@ -10,6 +9,9 @@ import java.sql.Timestamp;
 @Table(name = "device_logs")
 @Setter
 @Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class DeviceLogModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

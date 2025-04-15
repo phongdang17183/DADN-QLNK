@@ -2,8 +2,8 @@ package com.example.IotProject.controller;
 
 import com.example.IotProject.model.UserModel;
 // import com.example.IotProject.service.AdminService;
-import com.example.IotProject.service.IUserService;
-// import com.example.IotProject.service.UserService;
+import com.example.IotProject.service.UserService.IUserService;
+// import com.example.IotProject.service.UserService.UserService;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
