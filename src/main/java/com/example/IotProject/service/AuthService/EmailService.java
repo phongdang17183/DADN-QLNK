@@ -123,7 +123,7 @@ public class EmailService {
         sendEmail(email);
     }
 
-    public void sendMailArletTemperature(String fullName, String toEmail, String data, ConditionRuleResponse res, RuleModel rule) {
+    public void sendMailArletTemperature(String fullName, String data, ConditionRuleResponse res, RuleModel rule) {
         String subject = "Cảnh báo nhiệt độ Bontanica";
         String body = """
             <!DOCTYPE html>
@@ -226,11 +226,11 @@ public class EmailService {
             </body>
             </html>
             """;
-        EmailDTO email = new EmailDTO(toEmail, subject, body);
+        EmailDTO email = new EmailDTO(rule.getUser().getEmail(), subject, body);
         sendEmail(email);
     }
 
-    public void sendMailAlertLight(String fullName, String toEmail, String data, ConditionRuleResponse res, RuleModel rule) {
+    public void sendMailAlertLight(String fullName, String data, ConditionRuleResponse res, RuleModel rule) {
         String subject = "Cảnh báo ánh sáng Bontanica";
         String body = """
             <!DOCTYPE html>
@@ -332,11 +332,11 @@ public class EmailService {
             </body>
             </html>
             """;
-        EmailDTO email = new EmailDTO(toEmail, subject, body);
+        EmailDTO email = new EmailDTO(rule.getUser().getEmail(), subject, body);
         sendEmail(email);
     }
     
-    public void sendMailAlertSoilMoisture(String fullName, String toEmail, String data, ConditionRuleResponse res, RuleModel rule) {
+    public void sendMailAlertSoilMoisture(String fullName, String data, ConditionRuleResponse res, RuleModel rule) {
         String subject = "Cảnh báo độ ẩm đất Bontanica";
         String body = """
             <!DOCTYPE html>
@@ -438,11 +438,11 @@ public class EmailService {
             </body>
             </html>
             """;
-        EmailDTO email = new EmailDTO(toEmail, subject, body);
+        EmailDTO email = new EmailDTO(rule.getUser().getEmail(), subject, body);
         sendEmail(email);
     }
     
-    public void sendMailAlertHumidity(String fullName, String toEmail, String data, ConditionRuleResponse res, RuleModel rule) {
+    public void sendMailAlertHumidity(String fullName, String data, ConditionRuleResponse res, RuleModel rule) {
         String subject = "Cảnh báo độ ẩm không khí Bontanica";
         String body = """
             <!DOCTYPE html>
@@ -544,7 +544,7 @@ public class EmailService {
             </body>
             </html>
             """;
-        EmailDTO email = new EmailDTO(toEmail, subject, body);
+        EmailDTO email = new EmailDTO(rule.getUser().getEmail(), subject, body);
         sendEmail(email);
     }
     
