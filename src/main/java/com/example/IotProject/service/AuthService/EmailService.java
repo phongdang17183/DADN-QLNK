@@ -123,7 +123,7 @@ public class EmailService {
         sendEmail(email);
     }
 
-    public void sendMailArletTemperature(String fullName, String toEmail, String data, ConditionRuleResponse res, RuleModel rule) {
+    public void sendMailArletTemperature(String data, ConditionRuleResponse res, RuleModel rule) {
         String subject = "Cảnh báo nhiệt độ Bontanica";
         String body = """
             <!DOCTYPE html>
@@ -184,7 +184,7 @@ public class EmailService {
             <body>
             <div class="email-container">
                 <h2>
-                Kính gửi """ +" "+fullName + ","+"""
+                Kính gửi """ +" "+rule.getUser().getFullName() + ","+"""
                 </h2>
                 
                 <p>Hệ thống <strong>Bontanica</strong> vừa ghi nhận nhiệt độ tại khu vực trồng khoai lang của bạn đã vượt quá mức an toàn:</p>
@@ -226,11 +226,11 @@ public class EmailService {
             </body>
             </html>
             """;
-        EmailDTO email = new EmailDTO(toEmail, subject, body);
+        EmailDTO email = new EmailDTO(rule.getUser().getEmail(), subject, body);
         sendEmail(email);
     }
 
-    public void sendMailAlertLight(String fullName, String toEmail, String data, ConditionRuleResponse res, RuleModel rule) {
+    public void sendMailAlertLight(String data, ConditionRuleResponse res, RuleModel rule) {
         String subject = "Cảnh báo ánh sáng Bontanica";
         String body = """
             <!DOCTYPE html>
@@ -290,7 +290,7 @@ public class EmailService {
             </head>
             <body>
             <div class="email-container">
-                <h2>Kính gửi """ + fullName + "," + """
+                <h2>Kính gửi """ + rule.getUser().getFullName() + "," + """
                 </h2>
                 
                 <p>Hệ thống <strong>Bontanica</strong> vừa ghi nhận mức ánh sáng tại khu vực trồng khoai lang của bạn đã vượt quá mức an toàn:</p>
@@ -332,11 +332,11 @@ public class EmailService {
             </body>
             </html>
             """;
-        EmailDTO email = new EmailDTO(toEmail, subject, body);
+        EmailDTO email = new EmailDTO(rule.getUser().getEmail(), subject, body);
         sendEmail(email);
     }
     
-    public void sendMailAlertSoilMoisture(String fullName, String toEmail, String data, ConditionRuleResponse res, RuleModel rule) {
+    public void sendMailAlertSoilMoisture(String data, ConditionRuleResponse res, RuleModel rule) {
         String subject = "Cảnh báo độ ẩm đất Bontanica";
         String body = """
             <!DOCTYPE html>
@@ -396,7 +396,7 @@ public class EmailService {
             </head>
             <body>
             <div class="email-container">
-                <h2>Kính gửi """ + fullName + "," + """
+                <h2>Kính gửi """ + rule.getUser().getFullName() + "," + """
                 </h2>
                 
                 <p>Hệ thống <strong>Bontanica</strong> vừa ghi nhận độ ẩm đất tại khu vực trồng khoai lang của bạn đã vượt quá mức an toàn:</p>
@@ -438,11 +438,11 @@ public class EmailService {
             </body>
             </html>
             """;
-        EmailDTO email = new EmailDTO(toEmail, subject, body);
+        EmailDTO email = new EmailDTO(rule.getUser().getEmail(), subject, body);
         sendEmail(email);
     }
     
-    public void sendMailAlertHumidity(String fullName, String toEmail, String data, ConditionRuleResponse res, RuleModel rule) {
+    public void sendMailAlertHumidity(String data, ConditionRuleResponse res, RuleModel rule) {
         String subject = "Cảnh báo độ ẩm không khí Bontanica";
         String body = """
             <!DOCTYPE html>
@@ -502,7 +502,7 @@ public class EmailService {
             </head>
             <body>
             <div class="email-container">
-                <h2>Kính gửi """ + fullName + "," + """
+                <h2>Kính gửi """ + rule.getUser().getFullName() + "," + """
                 </h2>
                 
                 <p>Hệ thống <strong>Bontanica</strong> vừa ghi nhận độ ẩm không khí tại khu vực trồng khoai lang của bạn đã vượt quá mức an toàn:</p>
@@ -544,7 +544,7 @@ public class EmailService {
             </body>
             </html>
             """;
-        EmailDTO email = new EmailDTO(toEmail, subject, body);
+        EmailDTO email = new EmailDTO(rule.getUser().getEmail(), subject, body);
         sendEmail(email);
     }
     
