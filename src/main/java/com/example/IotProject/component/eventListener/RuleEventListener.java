@@ -1,24 +1,21 @@
 package com.example.IotProject.component.eventListener;
 
 import com.example.IotProject.component.event.MQTTMessageReceivedEvent;
-import com.example.IotProject.dto.deviceDTO.DeviceStatusDTO;
 import com.example.IotProject.enums.DeviceStatus;
-import com.example.IotProject.enums.RuleOperator;
 import com.example.IotProject.model.RuleModel;
-import com.example.IotProject.model.ConditionRuleModel;
 import com.example.IotProject.model.DeviceModel;
 import com.example.IotProject.response.RuleResponse.ConditionRuleResponse;
-import com.example.IotProject.service.ConditionRuleService;
-import com.example.IotProject.service.DeviceService;
-import com.example.IotProject.service.RuleService;
+import com.example.IotProject.service.DeviceService.DeviceService;
+import com.example.IotProject.service.HistoryLogService.DeviceLogService;
+import com.example.IotProject.service.RuleService.ConditionRuleService;
+import com.example.IotProject.service.RuleService.RuleService;
 import com.example.IotProject.service.adafruitService.AdafruitClientServiceMQTT;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -36,6 +33,9 @@ public class RuleEventListener {
 
     @Autowired
     private AdafruitClientServiceMQTT adafruitClientServiceMQTT;
+
+    @Autowired
+    private DeviceLogService deviceLogServicel;
 
     @EventListener
     @Async
@@ -75,6 +75,10 @@ public class RuleEventListener {
                 }
                 if (isSatisfied) {
                     System.out.println(">>> Rule matched (ID=" + rule.getId() + "), perform action: " + rule.getAction());
+                    String action = rule.getDevice().getFeedName() + '/' + data + " is in range: "
+                            + "[" + conditions.getFirst().getMinValue() + ","
+                            + conditions.getFirst().getMaxValue() + "]";
+                    deviceLogServicel.createDeviceLog(action, rule.getDevice().getFeedName(), Timestamp.valueOf(LocalDateTime.now()));
                     doAction(rule);
                 }
             }
@@ -97,14 +101,6 @@ public class RuleEventListener {
         }
         return actualValue >= fMinValue && actualValue <= fMaxValue;
 
-        // return switch (operator) {
-        //     case GREATER -> actualValue > threshold;
-        //     case GREATEREQUAL -> actualValue >= threshold;
-        //     case LESS -> actualValue < threshold;
-        //     case LESSEQUAL -> actualValue <= threshold;
-        //     case EQUAL -> actualValue.equals(threshold);
-        //     default -> false;
-        // };
     }
 
 
@@ -128,18 +124,18 @@ public class RuleEventListener {
                         System.out.println(">>> [ACTION] " + feedName + " is already ON, no action taken.");
                         return;
                     }
-
-                    deviceService.updateStatusDevice(feedName, DeviceStatus.ENABLE);
                     adafruitClientServiceMQTT.publishMessage(2.0f, feedName);
+                    deviceService.updateStatusDevice(feedName, DeviceStatus.ENABLE);
+                    deviceLogServicel.createDeviceLog(action, feedName, Timestamp.valueOf(LocalDateTime.now()));
                 } else if ("off".equals(parts[1]) ){
                     // Nếu trạng thái hiện tại là OFF thì không làm gì cả
                     if (status == DeviceStatus.DISABLE) {
                         System.out.println(">>> [ACTION] " + feedName + " is already OFF, no action taken.");
                         return;
                     }
-
-                    deviceService.updateStatusDevice(feedName, DeviceStatus.DISABLE);
                     adafruitClientServiceMQTT.publishMessage(1.0f, feedName);
+                    deviceService.updateStatusDevice(feedName, DeviceStatus.DISABLE);
+                    deviceLogServicel.createDeviceLog(action, feedName, Timestamp.valueOf(LocalDateTime.now()));
                 }
                 // notificate
             } else {

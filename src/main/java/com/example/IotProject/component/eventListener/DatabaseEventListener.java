@@ -1,7 +1,7 @@
 package com.example.IotProject.component.eventListener;
 
 import com.example.IotProject.component.event.MQTTMessageReceivedEvent;
-import com.example.IotProject.service.DeviceDataService;
+import com.example.IotProject.service.DeviceDataService.DeviceDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;

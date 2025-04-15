@@ -1,12 +1,14 @@
-package com.example.IotProject.service;
+package com.example.IotProject.service.HistoryLogService;
 
 import com.example.IotProject.model.UserModel;
+import com.example.IotProject.service.UserService.UserService;
 import org.springframework.stereotype.Service;
 
 import com.example.IotProject.model.HistoryLogModel;
 import com.example.IotProject.repository.HistoryLogRepository;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Service
 public class HistoryLogService implements IHistoryLogService {
@@ -33,5 +35,9 @@ public class HistoryLogService implements IHistoryLogService {
         log.setTimestamp(time);
         historyLogRepository.save(log);
         return "Log Action Success";
+    }
+
+    public List<HistoryLogModel> getAll(){
+        return historyLogRepository.findAll();
     }
 }

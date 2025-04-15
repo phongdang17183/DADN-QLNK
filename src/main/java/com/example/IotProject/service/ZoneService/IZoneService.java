@@ -1,9 +1,8 @@
-package com.example.IotProject.service;
+package com.example.IotProject.service.ZoneService;
 
 import com.example.IotProject.model.ZoneModel;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface IZoneService {
     public List<ZoneModel> getZones();

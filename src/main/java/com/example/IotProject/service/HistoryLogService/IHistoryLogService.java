@@ -1,4 +1,4 @@
-package com.example.IotProject.service;
+package com.example.IotProject.service.HistoryLogService;
 
 import com.example.IotProject.model.HistoryLogModel;
 

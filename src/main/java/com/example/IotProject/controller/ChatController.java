@@ -1,8 +1,7 @@
 package com.example.IotProject.controller;
 
 import com.example.IotProject.dto.WebSocketDataDTO.DeviceDataDTO;
-import com.example.IotProject.repository.HistoryLogRepository;
-import com.example.IotProject.service.HistoryLogService;
+import com.example.IotProject.service.HistoryLogService.HistoryLogService;
 import com.example.IotProject.service.adafruitService.AdafruitClientServiceMQTT;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;

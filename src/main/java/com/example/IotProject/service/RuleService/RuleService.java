@@ -1,7 +1,9 @@
-package com.example.IotProject.service;
+package com.example.IotProject.service.RuleService;
 
 import java.util.List;
 
+import com.example.IotProject.service.DeviceService.DeviceService;
+import com.example.IotProject.service.UserService.UserService;
 import org.springframework.stereotype.Service;
 
 import com.example.IotProject.dto.RuleDTO;

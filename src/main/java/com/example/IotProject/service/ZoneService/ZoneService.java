@@ -1,8 +1,7 @@
-package com.example.IotProject.service;
+package com.example.IotProject.service.ZoneService;
 
 import com.example.IotProject.exception.DataNotFoundException;
 import com.example.IotProject.exception.ExistUsernameException;
-import com.example.IotProject.model.DeviceModel;
 import com.example.IotProject.model.ZoneModel;
 import com.example.IotProject.repository.ZoneRepository;
 import org.springframework.stereotype.Service;

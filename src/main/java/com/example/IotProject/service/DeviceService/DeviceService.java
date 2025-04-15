@@ -1,4 +1,4 @@
-package com.example.IotProject.service;
+package com.example.IotProject.service.DeviceService;
 
 import com.example.IotProject.dto.deviceDTO.CreateDeviceDTO;
 import com.example.IotProject.dto.deviceDTO.DeviceInfoDTO;
@@ -9,11 +9,11 @@ import com.example.IotProject.exception.CreateFeedFailedException;
 import com.example.IotProject.exception.ZoneNotFoundException;
 import com.example.IotProject.model.*;
 import com.example.IotProject.repository.*;
+import com.example.IotProject.service.HistoryLogService.HistoryLogService;
+import com.example.IotProject.service.UserService.UserService;
 import com.example.IotProject.service.adafruitService.AdaFruitClientServiceHTTP;
 import com.example.IotProject.service.adafruitService.AdafruitClientServiceMQTT;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.persistence.Cacheable;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheEvict;
@@ -22,7 +22,6 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 public class DeviceService {

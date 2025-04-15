@@ -1,8 +1,7 @@
-package com.example.IotProject.service;
+package com.example.IotProject.service.UserService;
 
 import java.util.List;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 

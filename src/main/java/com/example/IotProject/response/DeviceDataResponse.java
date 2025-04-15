@@ -5,14 +5,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
-public class RestResponse<T> {
-    private int statusCode;
-    private String error;
-    private Object message;
-    private T data;
-
+public class DeviceDataResponse {
+    private String device;
+    private Float value;
+    private Timestamp timestamp;
 }

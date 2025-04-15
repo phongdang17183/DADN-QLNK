@@ -1,4 +1,4 @@
-package com.example.IotProject.service;
+package com.example.IotProject.service.UserService;
 
 import java.util.List;
 

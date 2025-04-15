@@ -1,7 +1,8 @@
 package com.example.IotProject.controller;
 
 import com.example.IotProject.model.ZoneModel;
-import com.example.IotProject.service.IZoneService;
+import com.example.IotProject.service.ZoneService.IZoneService;
+import feign.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,13 +25,13 @@ public class ZoneController {
         return ResponseEntity.ok(zoneService.getZones());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ZoneModel> getById(@PathVariable Long id){
+    @GetMapping("/id")
+    public ResponseEntity<?> getById(@Param Long id){
         return ResponseEntity.ok(zoneService.getZoneById(id));
     }
 
-    @GetMapping("/{name}")
-    public ResponseEntity<ZoneModel> getById(@PathVariable String name){
+    @GetMapping("/name")
+    public ResponseEntity<ZoneModel> getByName(@Param String name){
         return ResponseEntity.ok(zoneService.getZoneByName(name));
     }
 
