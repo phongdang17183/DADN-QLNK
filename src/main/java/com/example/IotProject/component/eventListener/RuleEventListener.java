@@ -5,6 +5,7 @@ import com.example.IotProject.enums.DeviceStatus;
 import com.example.IotProject.model.RuleModel;
 import com.example.IotProject.model.DeviceModel;
 import com.example.IotProject.response.RuleResponse.ConditionRuleResponse;
+import com.example.IotProject.service.AuthService.EmailService;
 import com.example.IotProject.service.DeviceService.DeviceService;
 import com.example.IotProject.service.HistoryLogService.DeviceLogService;
 import com.example.IotProject.service.RuleService.ConditionRuleService;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Component;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Component
 public class RuleEventListener {
@@ -36,6 +38,9 @@ public class RuleEventListener {
 
     @Autowired
     private DeviceLogService deviceLogServicel;
+
+    @Autowired
+    private EmailService emailService;
 
     @EventListener
     @Async
@@ -79,6 +84,7 @@ public class RuleEventListener {
                             + "[" + conditions.getFirst().getMinValue() + ","
                             + conditions.getFirst().getMaxValue() + "]";
                     deviceLogServicel.createDeviceLog(action, rule.getDevice().getFeedName(), Timestamp.valueOf(LocalDateTime.now()));
+                    sendEmail(data.toString(), conditions.getFirst(),rule);
                     doAction(rule);
                 }
             }
@@ -103,7 +109,19 @@ public class RuleEventListener {
 
     }
 
-
+    private void sendEmail(String data, ConditionRuleResponse conditionRuleResponse, RuleModel ruleModel){
+        String[] sensorType = ruleModel.getDevice().getFeedName().split("-");
+        System.out.println(sensorType[0]+"------------------------------------");
+        if (Objects.equals(sensorType[0], "soil")){
+            emailService.sendMailAlertSoilMoisture(data,conditionRuleResponse,ruleModel);
+        } else if (Objects.equals(sensorType[0], "light")) {
+            emailService.sendMailAlertLight(data,conditionRuleResponse,ruleModel);
+        } else if (Objects.equals(sensorType[0], "humidity")) {
+            emailService.sendMailAlertHumidity(data,conditionRuleResponse,ruleModel);
+        } else if (Objects.equals(sensorType[0], "temp")) {
+            emailService.sendMailArletTemperature(data,conditionRuleResponse,ruleModel);
+        }
+    }
 
 
 
