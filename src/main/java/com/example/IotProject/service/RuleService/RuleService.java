@@ -2,8 +2,8 @@ package com.example.IotProject.service.RuleService;
 
 import java.util.List;
 
-import com.example.IotProject.service.DeviceService.DeviceService;
-import com.example.IotProject.service.UserService.UserService;
+import com.example.IotProject.service.DeviceService.IDeviceService;
+import com.example.IotProject.service.UserService.IUserService;
 import org.springframework.stereotype.Service;
 
 import com.example.IotProject.dto.RuleDTO;
@@ -11,18 +11,18 @@ import com.example.IotProject.model.RuleModel;
 import com.example.IotProject.repository.RuleRepository;
 
 @Service
-public class RuleService {
+public class RuleService implements IRuleService {
 
     private final RuleRepository ruleRepository;
-    private final DeviceService deviceService;
-    private final UserService userService;
+    private final IDeviceService deviceService;
+    private final IUserService userService;
 
-    public RuleService(RuleRepository ruleRepository, DeviceService deviceService, UserService userService) {
+    public RuleService(RuleRepository ruleRepository, IDeviceService deviceService, IUserService userService) {
         this.ruleRepository = ruleRepository;
         this.deviceService = deviceService;
         this.userService = userService;
     }
-
+    @Override
     public void createRule(RuleDTO ruleDTO) {
         // Logic to create a rule
         RuleModel ruleModel = new RuleModel();
@@ -31,6 +31,7 @@ public class RuleService {
         ruleModel.setUser(userService.getUserById(ruleDTO.getUserId()));
         ruleRepository.save(ruleModel);
     }
+    @Override
     public void updateRule(Long id ,RuleDTO ruleDTO ) {
         // Logic to update a rule
         RuleModel ruleModel = ruleRepository.findAllById(id);
@@ -44,6 +45,7 @@ public class RuleService {
         }
 
     }
+    @Override
     public void deleteRule(Long id) {
         // Logic to delete a rule
         RuleModel ruleModel = ruleRepository.findAllById(id);
@@ -53,6 +55,7 @@ public class RuleService {
             throw new RuntimeException("Rule not found with id: " + id);
         }
     }
+    @Override
     public RuleModel getRuleById(Long id) {
         // Logic to get a rule by ID
         RuleModel ruleModel = ruleRepository.findAllById(id);
@@ -62,10 +65,11 @@ public class RuleService {
             throw new RuntimeException("Rule not found with id: " + id);
         }
     }
+    @Override
     public List<RuleModel> getAllRules() {
         return ruleRepository.findAll();
     }
-
+    @Override
     public List<RuleModel> getRulesbyDevice(String feedname){
         List<RuleModel> rules = ruleRepository.findRulesByDeviceId(feedname);
 

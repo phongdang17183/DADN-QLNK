@@ -12,18 +12,18 @@ import org.springframework.stereotype.Service;
 import com.example.IotProject.dto.EmailDTO;
 import com.example.IotProject.model.RuleModel;
 import com.example.IotProject.response.RuleResponse.ConditionRuleResponse;
-import com.example.IotProject.response.RuleResponse.RuleResponse;
 
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 
 @Service
-public class EmailService {
+public class EmailService implements IEmailService {
     @Autowired
     private JavaMailSender javaMailSender;
     @Value("${spring.mail.username}")
     String fromEmail;
 
+    @Override
     public void sendEmail(EmailDTO email) {
         MimeMessage message = javaMailSender.createMimeMessage();
         try {
@@ -39,10 +39,7 @@ public class EmailService {
         }
     }
 
-    public String changeFormatDay(LocalDateTime input) {
-        return input.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-    }
-
+    @Override
     public void sendOTPEmail(String fullName,String toEmail, String otp) {
         String subject = "Mã xác thực OTP Bontanica";
         String body = """
@@ -123,6 +120,7 @@ public class EmailService {
         sendEmail(email);
     }
 
+    @Override
     public void sendMailArletTemperature(String data, ConditionRuleResponse res, RuleModel rule) {
         String subject = "Cảnh báo nhiệt độ Bontanica";
         String body = """
@@ -229,7 +227,8 @@ public class EmailService {
         EmailDTO email = new EmailDTO(rule.getUser().getEmail(), subject, body);
         sendEmail(email);
     }
-
+    
+    @Override
     public void sendMailAlertLight(String data, ConditionRuleResponse res, RuleModel rule) {
         String subject = "Cảnh báo ánh sáng Bontanica";
         String body = """
@@ -335,7 +334,8 @@ public class EmailService {
         EmailDTO email = new EmailDTO(rule.getUser().getEmail(), subject, body);
         sendEmail(email);
     }
-    
+
+    @Override
     public void sendMailAlertSoilMoisture(String data, ConditionRuleResponse res, RuleModel rule) {
         String subject = "Cảnh báo độ ẩm đất Bontanica";
         String body = """
@@ -442,6 +442,7 @@ public class EmailService {
         sendEmail(email);
     }
     
+    @Override
     public void sendMailAlertHumidity(String data, ConditionRuleResponse res, RuleModel rule) {
         String subject = "Cảnh báo độ ẩm không khí Bontanica";
         String body = """

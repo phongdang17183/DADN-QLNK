@@ -17,19 +17,20 @@ import com.example.IotProject.response.RuleResponse.ConditionRuleResponse;
 
 
 @Service
-public class ConditionRuleService {
+public class ConditionRuleService implements IConditionRuleService {
     private final ConditionRuleRepository conditionRuleRepository;
     private final CacheManager cacheManager;
 
-    private final RuleService ruleService;
+    private final IRuleService ruleService;
 
-    public ConditionRuleService(ConditionRuleRepository conditionRuleRepository, CacheManager cacheManager, RuleService ruleService) {
+    public ConditionRuleService(ConditionRuleRepository conditionRuleRepository, CacheManager cacheManager, IRuleService ruleService) {
         this.conditionRuleRepository = conditionRuleRepository;
         this.cacheManager = cacheManager;
         this.ruleService = ruleService;
     }
 
     @Cacheable(value = "rulesCache", key = "'all'")
+    @Override
     public List<ConditionRuleResponse> getAll() {
         List<ConditionRuleModel> conditionRuleModels = conditionRuleRepository.findAll();
         List<ConditionRuleResponse> conditionRuleResponses = conditionRuleModels.stream()
@@ -44,7 +45,7 @@ public class ConditionRuleService {
                 .toList();
         return conditionRuleResponses;
     }
-
+    @Override
     public ConditionRuleResponse getRuleById(Long id) {
         ConditionRuleModel conditionRuleModel = conditionRuleRepository.findById(id).orElseThrow(() -> new RuntimeException("Condition rule not found"));
         return new ConditionRuleResponse(
@@ -55,14 +56,15 @@ public class ConditionRuleService {
                 conditionRuleModel.getStartDate(),
                 conditionRuleModel.getEndDate());
     }
-
     @CacheEvict(value = "rulesCache", key = "'all'")
+    @Override
     public void deleteRule(Long id ) {
         conditionRuleRepository.deleteById(id);
     }
 
 
     @CacheEvict(value = "rulesCache", key = "'all'")
+    @Override
     public void addRule(ConditionRuleDTO conditionRuleDTO) {
         if (conditionRuleRepository.existsByMinValueAndMaxValueAndStartDateAndEndDate(
                 conditionRuleDTO.getName(),
@@ -113,6 +115,7 @@ public class ConditionRuleService {
 
 
     @CacheEvict(value = "rulesCache", key = "'all'")
+    @Override
     public void updateRule(Long id, ConditionRuleDTO conditionRuleDTO) {
         ConditionRuleModel conditionRuleModel = conditionRuleRepository.findById(id).orElseThrow(() -> new RuntimeException("Condition rule not found"));
         conditionRuleModel.setName(conditionRuleDTO.getName());
@@ -135,7 +138,7 @@ public class ConditionRuleService {
             cache.put(conditionRuleModel.getId(), conditionRuleResponse);
         }
     }
-
+    @Override
     public List<ConditionRuleResponse> getConditionByRule(Long rule_id){
         List<ConditionRuleModel> conditionRuleModels = conditionRuleRepository.findByRuleId(rule_id);
         List<ConditionRuleResponse> conditionRuleResponses = conditionRuleModels.stream()

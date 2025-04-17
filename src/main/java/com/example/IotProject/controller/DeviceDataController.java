@@ -3,7 +3,8 @@ package com.example.IotProject.controller;
 
 import com.example.IotProject.model.DeviceDataModel;
 import com.example.IotProject.response.DeviceDataResponse;
-import com.example.IotProject.service.DeviceDataService.DeviceDataService;
+import com.example.IotProject.service.DeviceDataService.IDeviceDataService;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -13,9 +14,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/devices/data")
 public class DeviceDataController {
-    DeviceDataService deviceDataService;
+    IDeviceDataService deviceDataService;
 
-    public DeviceDataController(DeviceDataService deviceDataService){
+    public DeviceDataController(IDeviceDataService deviceDataService){
         this.deviceDataService = deviceDataService;
     }
 

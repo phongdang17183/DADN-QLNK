@@ -5,8 +5,8 @@ import com.example.IotProject.enums.DeviceStatus;
 import com.example.IotProject.model.RuleModel;
 import com.example.IotProject.model.DeviceModel;
 import com.example.IotProject.response.RuleResponse.ConditionRuleResponse;
-import com.example.IotProject.service.AuthService.EmailService;
-import com.example.IotProject.service.DeviceService.DeviceService;
+import com.example.IotProject.service.AuthService.IEmailService;
+import com.example.IotProject.service.DeviceService.IDeviceService;
 import com.example.IotProject.service.HistoryLogService.DeviceLogService;
 import com.example.IotProject.service.RuleService.ConditionRuleService;
 import com.example.IotProject.service.RuleService.RuleService;
@@ -31,7 +31,7 @@ public class RuleEventListener {
     private ConditionRuleService conditionRuleService;
 
     @Autowired
-    private DeviceService deviceService;
+    private IDeviceService deviceService;
 
     @Autowired
     private AdafruitClientServiceMQTT adafruitClientServiceMQTT;
@@ -40,7 +40,7 @@ public class RuleEventListener {
     private DeviceLogService deviceLogServicel;
 
     @Autowired
-    private EmailService emailService;
+    private IEmailService emailService;
 
     @EventListener
     @Async

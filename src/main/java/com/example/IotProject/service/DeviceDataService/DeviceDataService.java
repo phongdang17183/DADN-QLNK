@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class DeviceDataService {
+public class DeviceDataService implements IDeviceDataService {
     private final DeviceDataRepository deviceDataRepository;
     private final DeviceRepository deviceRepository;
 
@@ -27,7 +27,7 @@ public class DeviceDataService {
         this.deviceDataRepository = deviceDataRepository;
         this.deviceRepository = deviceRepository;
     }
-
+    @Override
     public DeviceDataModel saveData(Timestamp time, Float value, String feedname){
         DeviceModel device = deviceRepository.findByFeedName(feedname);
 
@@ -38,10 +38,12 @@ public class DeviceDataService {
         return deviceDataRepository.save(newData);
     }
 
+    @Override
     public List<DeviceDataModel> getAllDeviceData(String feedName){
         return deviceDataRepository.findByDevice_feedName(feedName);
     }
 
+    @Override
     public List<DeviceDataModel> getAllZoneData(Long zoneId){
         List<DeviceModel> devices = deviceRepository.findByZoneId(zoneId);
 
@@ -55,6 +57,7 @@ public class DeviceDataService {
         return deviceDataModels;
     }
 
+    @Override
     public List<DeviceDataModel> getDataOneDay(String feedName) {
         // Lấy thời gian hiện tại
         LocalDateTime now = LocalDateTime.now();
@@ -75,6 +78,7 @@ public class DeviceDataService {
         );
     }
 
+    @Override
     public List<DeviceDataModel> getDataOneWeek(String feedName) {
         // Lấy thời gian hiện tại
         LocalDateTime now = LocalDateTime.now();
@@ -100,6 +104,7 @@ public class DeviceDataService {
         );
     }
 
+    @Override
     public List<DeviceDataModel> getDataOneMonth(String feedName) {
         // Lấy thời gian hiện tại
         LocalDateTime now = LocalDateTime.now();

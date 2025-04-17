@@ -3,6 +3,8 @@ package com.example.IotProject.controller;
 import com.example.IotProject.response.RuleResponse.RuleAndConditionResponse;
 import com.example.IotProject.response.StringResponse;
 import com.example.IotProject.service.RuleService.ConditionRuleService;
+import com.example.IotProject.service.RuleService.IConditionRuleService;
+import com.example.IotProject.service.RuleService.IRuleService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,8 +28,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RestController
 @RequestMapping("/api/v1/rules")
 public class RuleController {
-    private final ConditionRuleService conditionRuleService;
-    private final RuleService ruleService;
+    private final IConditionRuleService conditionRuleService;
+    private final IRuleService ruleService;
     public RuleController(ConditionRuleService conditionRuleService, RuleService ruleService) {
         this.conditionRuleService = conditionRuleService;
         this.ruleService = ruleService;
