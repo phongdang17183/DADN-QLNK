@@ -1,10 +1,13 @@
 package com.example.IotProject.controller;
 
 import com.example.IotProject.dto.WebSocketDataDTO.DeviceDataDTO;
+
 import com.example.IotProject.service.HistoryLogService.HistoryLogService;
+import com.example.IotProject.service.HistoryLogService.IHistoryLogService;
 import com.example.IotProject.service.adafruitService.AdafruitClientServiceMQTT;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
+
 
 import java.security.Principal;
 
@@ -21,7 +24,7 @@ public class ChatController {
 
     @MessageMapping("/chat") // Client gửi đến "/app/chat" -> gửi đề điều khuyển thiết bị
     public DeviceDataDTO handleChatMessage(DeviceDataDTO message, Principal principal) {
-        String username = principal.getName(); // 👈 lấy username tại đây
+        String username = principal.getName(); // lấy username trong principal của token
         System.out.println("---------websocket receive--------");
         System.out.println(username);
         System.out.println(message);
@@ -35,4 +38,6 @@ public class ChatController {
         historyLogService.logWSHistory(action,username,message.getTimestamp());
         return message;
     }
+
+
 }

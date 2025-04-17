@@ -4,6 +4,7 @@ import com.example.IotProject.model.DeviceLogModel;
 import com.example.IotProject.model.HistoryLogModel;
 import com.example.IotProject.response.HistoryLog.HistoryLogResponse;
 import com.example.IotProject.service.HistoryLogService.DeviceLogService;
+import com.example.IotProject.service.HistoryLogService.IDeviceLogService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,7 +19,7 @@ import java.util.List;
 @RequestMapping("/api/v1/history-logs")
 public class HistoryLogController {
     private final HistoryLogService historyLogService;
-    private final DeviceLogService deviceLogService;
+    private final IDeviceLogService deviceLogService;
 
     public HistoryLogController(HistoryLogService historyLogService, DeviceLogService deviceLogService) {
 

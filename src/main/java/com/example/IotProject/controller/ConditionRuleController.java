@@ -1,6 +1,7 @@
 package com.example.IotProject.controller;
 
 import com.example.IotProject.service.RuleService.ConditionRuleService;
+import com.example.IotProject.service.RuleService.IConditionRuleService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,7 +18,7 @@ import com.example.IotProject.dto.ConditionRuleDTO;
 @RestController
 @RequestMapping("/api/v1/condition-rules")
 public class ConditionRuleController {
-    private final ConditionRuleService conditionRuleService;
+    private final IConditionRuleService conditionRuleService;
     public ConditionRuleController(ConditionRuleService conditionRuleService) {
         this.conditionRuleService = conditionRuleService;
     }

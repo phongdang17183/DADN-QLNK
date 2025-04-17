@@ -1,6 +1,7 @@
 package com.example.IotProject.controller;
 
 
+import com.example.IotProject.service.FCMservice.FCMService;
 import com.example.IotProject.service.adafruitService.AdaFruitClientServiceHTTP;
 import com.example.IotProject.service.adafruitService.AdafruitClientServiceMQTT;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,5 +35,12 @@ public class AdafruitController {
     public ResponseEntity<String> getFeeds(@PathVariable String username, @PathVariable String feedName) {
         String feeds = adaFruitServiceHTTP.getFeedInfo(username, feedName);
         return ResponseEntity.ok(feeds);
+    }
+
+    @PostMapping("/sendnoti")
+    public String sendNotification(@RequestParam String token,
+                                   @RequestParam String title,
+                                   @RequestParam String body) {
+        return FCMService.sendPushNotification(token, title, body);
     }
 }
