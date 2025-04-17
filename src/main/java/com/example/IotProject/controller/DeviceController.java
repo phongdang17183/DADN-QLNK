@@ -5,7 +5,8 @@ import com.example.IotProject.dto.deviceDTO.DeviceInfoDTO;
 import com.example.IotProject.dto.deviceDTO.DeviceStatusDTO;
 import com.example.IotProject.model.DeviceModel;
 import com.example.IotProject.response.StringResponse;
-import com.example.IotProject.service.DeviceService.DeviceService;
+import com.example.IotProject.service.DeviceService.IDeviceService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,10 +18,10 @@ import java.util.List;
 @RequestMapping("${api.prefix}/devices")
 public class DeviceController {
 
-    private final DeviceService deviceService;
+    private final IDeviceService deviceService;
 
     @Autowired
-    public DeviceController(DeviceService deviceService) {
+    public DeviceController(IDeviceService deviceService) {
         this.deviceService = deviceService;
     }
 

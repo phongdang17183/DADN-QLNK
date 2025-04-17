@@ -1,7 +1,7 @@
 package com.example.IotProject.service.HistoryLogService;
 
 import com.example.IotProject.model.UserModel;
-import com.example.IotProject.service.UserService.UserService;
+import com.example.IotProject.service.UserService.IUserService;
 import org.springframework.stereotype.Service;
 
 import com.example.IotProject.model.HistoryLogModel;
@@ -14,10 +14,10 @@ import java.util.List;
 public class HistoryLogService implements IHistoryLogService {
 
     private final HistoryLogRepository historyLogRepository;
-    private final UserService userService;
+    private final IUserService userService;
 
 
-    public HistoryLogService(HistoryLogRepository historyLogRepository, UserService userService) {
+    public HistoryLogService(HistoryLogRepository historyLogRepository, IUserService userService) {
         this.historyLogRepository = historyLogRepository;
         this.userService = userService;
     }

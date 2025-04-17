@@ -10,7 +10,7 @@ import com.example.IotProject.exception.ZoneNotFoundException;
 import com.example.IotProject.model.*;
 import com.example.IotProject.repository.*;
 import com.example.IotProject.service.HistoryLogService.HistoryLogService;
-import com.example.IotProject.service.UserService.UserService;
+import com.example.IotProject.service.UserService.IUserService;
 import com.example.IotProject.service.adafruitService.AdaFruitClientServiceHTTP;
 import com.example.IotProject.service.adafruitService.AdafruitClientServiceMQTT;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,14 +24,14 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class DeviceService {
+public class DeviceService implements IDeviceService {
     private final DeviceRepository deviceRepository;
     private final ZoneRepository zoneRepository;
     private final UserRepository userRepository;
     private final AdaFruitClientServiceHTTP adaFruitServiceHTTP;
     private final AdafruitClientServiceMQTT mqttServiceMQTT;
     private final String userName;
-    private final UserService userService;
+    private final IUserService userService;
     private final ManagementRepository managementRepository;
     private final HistoryLogService historyLogService;
     private final AdafruitClientServiceMQTT adafruitClientServiceMQTT;
@@ -45,7 +45,7 @@ public class DeviceService {
             AdaFruitClientServiceHTTP adaFruitServiceHTTP,
             AdafruitClientServiceMQTT mqttServiceMQTT,
             @Value("${mqtt.username}") String userName,
-            UserService userService,
+            IUserService userService,
             HistoryLogService historyLogService,
             AdafruitClientServiceMQTT adafruitClientServiceMQTT
     ) {
@@ -60,7 +60,6 @@ public class DeviceService {
         this.historyLogService = historyLogService;
         this.adafruitClientServiceMQTT = adafruitClientServiceMQTT;
     }
-
     private Map<String, Object> parseJson(String jsonString) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
@@ -95,6 +94,7 @@ public class DeviceService {
     }
 
     // TODO: This function add a feed of a device from AdaFruit
+    @Override
     public DeviceInfoDTO addDeviceFeed(CreateDeviceDTO createDeviceDTO)
     {
         // TODO: Check if the zone for the device exists
@@ -148,20 +148,25 @@ public class DeviceService {
         return deviceInfoDTO;
     }
 
+    @Override
     public DeviceModel findByFeed(String feedName){
         return deviceRepository.findByFeedName(feedName);
     }
 
+    @Override
     public List<DeviceModel> findByZoneId(Long zoneId){
         return deviceRepository.findByZoneId(zoneId);
     }
 
 //    @Cacheable(value = "status_device" ,key="#feedName")
+    @Override
     public DeviceStatus getStatusDevice(String feedName) {
         DeviceModel device = findByFeed(feedName);
         return device.getStatus();
     }
+
     @CacheEvict(value = "status_device", key = "#feedName")
+    @Override
     public String updateStatusDevice(String feedName, DeviceStatus status) {        // for auto device
         DeviceModel device = findByFeed(feedName);
         if (device != null) {
@@ -172,6 +177,7 @@ public class DeviceService {
         return "Device not found";
     }
 
+    @Override
     public String device_status(DeviceStatusDTO deviceStatusDTO){                   // for user control device
         DeviceModel device = deviceRepository.findByFeedName(deviceStatusDTO.getFeedName());
         if (device == null) {

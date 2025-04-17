@@ -2,7 +2,7 @@ package com.example.IotProject.service.AuthService;
 
 import java.util.UUID;
 
-import com.example.IotProject.service.UserService.UserService;
+import com.example.IotProject.service.UserService.IUserService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,8 +28,8 @@ public class AuthService implements IAuthService {
     private final JwtTokenUtil jwtTokenUtil;
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
-    private final UserService userService;
-    private final EmailService emailService;
+    private final IUserService userService;
+    private final IEmailService emailService;
 
     @Override
     public String login(String username, String password) {
