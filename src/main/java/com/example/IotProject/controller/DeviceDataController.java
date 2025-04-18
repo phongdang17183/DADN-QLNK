@@ -54,20 +54,80 @@ public class DeviceDataController {
     }
 
     // Lấy dữ liệu 1 ngày
-    @GetMapping("/oneday")
-    public List<DeviceDataModel> getDataOneDay(@RequestParam("feedName") String feedName) {
-        return deviceDataService.getDataOneDay(feedName);
+    @GetMapping("/oneday/{feedName}")
+    public List<DeviceDataResponse> getDataOneDay(@RequestParam("feedName") String feedName) {
+        List<DeviceDataResponse> deviceDataResponses = deviceDataService.getDataOneDay(feedName).stream().map(
+                                                deviceDataModel -> DeviceDataResponse.builder()
+                                                        .timestamp(deviceDataModel.getTime())
+                                                        .value(deviceDataModel.getValue())
+                                                        .device(deviceDataModel.getDevice().getFeedName())
+                                                        .build()
+                                                    ).toList();
+        return deviceDataResponses;
     }
 
     // Lấy dữ liệu 1 tuần
-    @GetMapping("/oneweek")
-    public List<DeviceDataModel> getDataOneWeek(@RequestParam("feedName") String feedName) {
-        return deviceDataService.getDataOneWeek(feedName);
+    @GetMapping("/oneweek/{feedName}")
+    public List<DeviceDataResponse> getDataOneWeek(@RequestParam("feedName") String feedName) {
+        List<DeviceDataResponse> deviceDataResponses = deviceDataService.getDataOneWeek(feedName).stream().map(
+                deviceDataModel -> DeviceDataResponse.builder()
+                        .timestamp(deviceDataModel.getTime())
+                        .value(deviceDataModel.getValue())
+                        .device(deviceDataModel.getDevice().getFeedName())
+                        .build()
+        ).toList();
+        return deviceDataResponses;
     }
 
     // Lấy dữ liệu 1 tháng
-    @GetMapping("/onemonth")
-    public List<DeviceDataModel> getDataOneMonth(@RequestParam("feedName") String feedName) {
-        return deviceDataService.getDataOneMonth(feedName);
+    @GetMapping("/onemonth/{feedName}")
+    public List<DeviceDataResponse> getDataByZoneOneMonth(@RequestParam("feedName") String feedName) {
+        List<DeviceDataResponse> deviceDataResponses = deviceDataService.getDataOneMonth(feedName).stream().map(
+                deviceDataModel -> DeviceDataResponse.builder()
+                        .timestamp(deviceDataModel.getTime())
+                        .value(deviceDataModel.getValue())
+                        .device(deviceDataModel.getDevice().getFeedName())
+                        .build()
+        ).toList();
+        return deviceDataResponses;
+    }
+
+    // Lấy dữ liệu 1 ngày
+    @GetMapping("/oneday/{ZoneId}")
+    public List<DeviceDataResponse> getDataByZoneOneDay(@RequestParam("ZoneId") Long ZoneId) {
+        List<DeviceDataResponse> deviceDataResponses = deviceDataService.getDataByZoneOneDay(ZoneId).stream().map(
+                deviceDataModel -> DeviceDataResponse.builder()
+                        .timestamp(deviceDataModel.getTime())
+                        .value(deviceDataModel.getValue())
+                        .device(deviceDataModel.getDevice().getFeedName())
+                        .build()
+        ).toList();
+        return deviceDataResponses;
+    }
+
+    // Lấy dữ liệu 1 tuần
+    @GetMapping("/oneweek/{ZoneId}")
+    public List<DeviceDataResponse> getDataByZoneOneWeek(@RequestParam("ZoneId") Long ZoneId) {
+        List<DeviceDataResponse> deviceDataResponses = deviceDataService.getDataByZoneOneWeek(ZoneId).stream().map(
+                deviceDataModel -> DeviceDataResponse.builder()
+                        .timestamp(deviceDataModel.getTime())
+                        .value(deviceDataModel.getValue())
+                        .device(deviceDataModel.getDevice().getFeedName())
+                        .build()
+        ).toList();
+        return deviceDataResponses;
+    }
+
+    // Lấy dữ liệu 1 tháng
+    @GetMapping("/onemonth/{ZoneId}")
+    public List<DeviceDataResponse> getDataOneMonth(@RequestParam("ZoneId") Long ZoneId) {
+        List<DeviceDataResponse> deviceDataResponses = deviceDataService.getDataByZoneOneMonth(ZoneId).stream().map(
+                deviceDataModel -> DeviceDataResponse.builder()
+                        .timestamp(deviceDataModel.getTime())
+                        .value(deviceDataModel.getValue())
+                        .device(deviceDataModel.getDevice().getFeedName())
+                        .build()
+        ).toList();
+        return deviceDataResponses;
     }
 }

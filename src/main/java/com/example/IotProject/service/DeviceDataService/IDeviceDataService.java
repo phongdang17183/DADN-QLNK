@@ -12,4 +12,7 @@ public interface IDeviceDataService {
     public List<DeviceDataModel> getDataOneDay(String feedName);
     public List<DeviceDataModel> getDataOneWeek(String feedName);
     public List<DeviceDataModel> getDataOneMonth(String feedName);
+    public List<DeviceDataModel> getDataByZoneOneDay(Long zoneId);
+    public List<DeviceDataModel> getDataByZoneOneWeek(Long zoneId);
+    public List<DeviceDataModel> getDataByZoneOneMonth(Long zoneId);
 }

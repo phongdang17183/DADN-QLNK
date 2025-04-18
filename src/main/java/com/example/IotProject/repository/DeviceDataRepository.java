@@ -23,4 +23,13 @@ public interface DeviceDataRepository extends JpaRepository<DeviceDataModel, Lon
             @Param("startTime") Timestamp startTime,
             @Param("endTime") Timestamp endTime
     );
+
+    @Query(value =
+            "TODO",
+            nativeQuery = true)
+    List<DeviceDataModel> findByZoneIdAndTimeRangeNative(
+            @Param("deviceId") Long zoneId,
+            @Param("startTime") Timestamp startTime,
+            @Param("endTime") Timestamp endTime
+    );
 }
