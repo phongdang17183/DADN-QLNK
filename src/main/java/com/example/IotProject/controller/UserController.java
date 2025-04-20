@@ -10,6 +10,10 @@ import com.example.IotProject.service.UserService.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
+
 
 
 @RestController
@@ -32,6 +36,12 @@ public class UserController {
         user.setRole(userModel.getRole());
         user.setCreatedAt(userModel.getCreatedAt());
         return ResponseEntity.ok(user);
+    }
+
+    @PutMapping("/updateUser/{id}")
+    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody UserModel user) {
+        userService.updateUser(id,user);
+        return ResponseEntity.ok("User updated successfully!");
     }
     
 }

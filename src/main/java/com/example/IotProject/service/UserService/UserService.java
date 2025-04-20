@@ -39,11 +39,13 @@ public class UserService implements IUserService {
                 new DataNotFoundException("User not found with username: " + username));
     }
     @Override
-    public UserModel updateUser(UserModel user) {
-        if(!userRepository.existsById(user.getId())) {
-            throw new DataNotFoundException("Cannot update. User not found with id: " + user.getId());
-        }
-        return userRepository.save(user);
+    public void updateUser(Long id,UserModel user) {
+        UserModel existingUser = userRepository.findById(id).orElseThrow(() ->
+            new DataNotFoundException("User not found with id: " + id));
+        existingUser.setFullName(user.getFullName());
+        existingUser.setEmail(user.getEmail());
+        existingUser.setPhone(user.getPhone());
+        userRepository.save(existingUser);
     }
 
     @Override

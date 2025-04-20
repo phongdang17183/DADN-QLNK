@@ -48,9 +48,9 @@ public class AdminController {
 
     @PreAuthorize("hasRole('ROLE_Admin')")
     @PutMapping("/users/{id}")
-    public ResponseEntity<UserModel> updateUser(@PathVariable Long id, @RequestBody UserModel user) {
-//        user.setId(id);
-        return ResponseEntity.ok(userService.updateUser(user));
+    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody UserModel user) {
+        userService.updateUser(id,user);
+        return ResponseEntity.ok("User updated successfully!");
     }
 
     @PreAuthorize("hasRole('Admin')")
