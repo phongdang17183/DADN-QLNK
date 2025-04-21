@@ -5,9 +5,7 @@ import com.example.IotProject.response.StringResponse;
 import com.example.IotProject.service.RuleService.ConditionRuleService;
 import com.example.IotProject.service.RuleService.IConditionRuleService;
 import com.example.IotProject.service.RuleService.IRuleService;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.IotProject.dto.RuleDTO;
 import com.example.IotProject.model.RuleModel;
@@ -18,11 +16,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
@@ -35,8 +28,9 @@ public class RuleController {
         this.ruleService = ruleService;
     }
     @PostMapping("/create")
-    public ResponseEntity<Object> createRule(@RequestBody RuleDTO ruleDTO) {
-        return ResponseEntity.ok(ruleService.createRule(ruleDTO));
+    public ResponseEntity<StringResponse> createRule(@RequestBody RuleDTO ruleDTO) {
+        ruleService.createRule(ruleDTO);
+        return ResponseEntity.ok(new StringResponse("Rule created successfully"));
     }
     @GetMapping("/getAll")
     public ResponseEntity<List<RuleResponse>> getAllRules() {
@@ -73,13 +67,33 @@ public class RuleController {
         List<RuleModel> rules = ruleService.getRulesbyDevice(feedName);
         if (rules != null && !rules.isEmpty()) {
             List<RuleAndConditionResponse> ruleResponses = rules.stream()
-                                                    .map(rule -> new RuleAndConditionResponse(
-                                                            rule.getId(),
-                                                            rule.getAction(),
-                                                            rule.getDevice().getFeedName(),
-                                                            rule.getUser().getId(),
-                                                            conditionRuleService.getConditionByRule(rule.getId())))
-                                                    .collect(Collectors.toList());
+                    .map(rule -> new RuleAndConditionResponse(
+                            rule.getId(),
+                            rule.getAction(),
+                            rule.getDevice().getFeedName(),
+                            rule.getUser().getId(),
+                            conditionRuleService.getConditionByRule(rule.getId())))
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(ruleResponses);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/getRulesAndConditionRulesByAction/{actuator_name}/{zone_id}")
+    public ResponseEntity<List<RuleAndConditionResponse>> getRulesAndConditionRulesByAction(
+            @PathVariable("actuator_name") String actuatorName,
+            @PathVariable("zone_id") Long zoneId) {
+        List<RuleModel> rules = ruleService.getRuleByActuatorNameAndZoneId(actuatorName, zoneId);
+        if (rules != null && !rules.isEmpty()) {
+            List<RuleAndConditionResponse> ruleResponses = rules.stream()
+                    .map(rule -> new RuleAndConditionResponse(
+                            rule.getId(),
+                            rule.getAction(),
+                            rule.getDevice().getFeedName(),
+                            rule.getUser().getId(),
+                            conditionRuleService.getConditionByRule(rule.getId())))
+                    .collect(Collectors.toList());
             return ResponseEntity.ok(ruleResponses);
         } else {
             return ResponseEntity.notFound().build();
