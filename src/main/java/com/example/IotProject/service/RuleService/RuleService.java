@@ -52,6 +52,7 @@ public class RuleService implements IRuleService {
         // Logic to delete a rule
         RuleModel ruleModel = ruleRepository.findAllById(id);
         if (ruleModel != null) {
+
             ruleRepository.delete(ruleModel);
         } else {
             throw new RuntimeException("Rule not found with id: " + id);

@@ -1,6 +1,8 @@
 package com.example.IotProject.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,6 +27,9 @@ public class RuleModel {
     @ManyToOne
     @JoinColumn(name = "created_by")
     private UserModel user;
+
+    @OneToMany(mappedBy = "rule", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ConditionRuleModel> conditions;
 
     @PrePersist
     protected void onCreate() {

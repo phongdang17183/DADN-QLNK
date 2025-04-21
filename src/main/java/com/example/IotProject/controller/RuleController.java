@@ -56,7 +56,7 @@ public class RuleController {
         }
     }
 
-    @DeleteMapping("/delete")
+        @DeleteMapping("/delete")
     public ResponseEntity<StringResponse> deleteRule(@RequestParam Long id) {
         ruleService.deleteRule(id);
         return ResponseEntity.ok(new StringResponse("Rule deleted successfully"));
