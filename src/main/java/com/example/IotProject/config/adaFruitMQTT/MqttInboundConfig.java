@@ -1,7 +1,6 @@
 package com.example.IotProject.config.adaFruitMQTT;
 
 
-import com.example.IotProject.enums.DeviceStatus;
 import com.example.IotProject.enums.DeviceType;
 import com.example.IotProject.model.DeviceModel;
 import com.example.IotProject.repository.DeviceRepository;
@@ -20,7 +19,6 @@ import org.springframework.integration.mqtt.support.DefaultPahoMessageConverter;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
 import org.springframework.integration.annotation.ServiceActivator;
-import org.springframework.scheduling.annotation.Async;
 
 import java.util.List;
 import java.util.stream.Collectors;

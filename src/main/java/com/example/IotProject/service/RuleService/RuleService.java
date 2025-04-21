@@ -1,6 +1,7 @@
 package com.example.IotProject.service.RuleService;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.example.IotProject.service.DeviceService.IDeviceService;
 import com.example.IotProject.service.UserService.IUserService;
@@ -23,13 +24,13 @@ public class RuleService implements IRuleService {
         this.userService = userService;
     }
     @Override
-    public void createRule(RuleDTO ruleDTO) {
+    public Object createRule(RuleDTO ruleDTO) {
         // Logic to create a rule
         RuleModel ruleModel = new RuleModel();
         ruleModel.setAction(ruleDTO.getAction());
         ruleModel.setDevice(deviceService.findByFeed(ruleDTO.getFeedName()));
         ruleModel.setUser(userService.getUserById(ruleDTO.getUserId()));
-        ruleRepository.save(ruleModel);
+        return ruleRepository.save(ruleModel);
     }
     @Override
     public void updateRule(Long id ,RuleDTO ruleDTO ) {

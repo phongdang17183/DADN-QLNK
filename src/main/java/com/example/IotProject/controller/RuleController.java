@@ -35,9 +35,8 @@ public class RuleController {
         this.ruleService = ruleService;
     }
     @PostMapping("/create")
-    public ResponseEntity<StringResponse> createRule(@RequestBody RuleDTO ruleDTO) {
-        ruleService.createRule(ruleDTO);
-        return ResponseEntity.ok(new StringResponse("Rule created successfully"));
+    public ResponseEntity<Object> createRule(@RequestBody RuleDTO ruleDTO) {
+        return ResponseEntity.ok(ruleService.createRule(ruleDTO));
     }
     @GetMapping("/getAll")
     public ResponseEntity<List<RuleResponse>> getAllRules() {
