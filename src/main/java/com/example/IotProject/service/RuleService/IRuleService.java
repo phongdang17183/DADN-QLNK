@@ -6,7 +6,7 @@ import com.example.IotProject.dto.RuleDTO;
 import com.example.IotProject.model.RuleModel;
 
 public interface IRuleService {
-    public void createRule(RuleDTO ruleDTO);
+    public RuleModel createRule(RuleDTO ruleDTO);
     public void updateRule(Long id, RuleDTO ruleDTO);
     public void deleteRule(Long id);
     public RuleModel getRuleById(Long id);

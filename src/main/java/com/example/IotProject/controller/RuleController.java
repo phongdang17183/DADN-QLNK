@@ -28,9 +28,8 @@ public class RuleController {
         this.ruleService = ruleService;
     }
     @PostMapping("/create")
-    public ResponseEntity<StringResponse> createRule(@RequestBody RuleDTO ruleDTO) {
-        ruleService.createRule(ruleDTO);
-        return ResponseEntity.ok(new StringResponse("Rule created successfully"));
+    public ResponseEntity<?> createRule(@RequestBody RuleDTO ruleDTO) {
+        return ResponseEntity.ok(ruleService.createRule(ruleDTO));
     }
     @GetMapping("/getAll")
     public ResponseEntity<List<RuleResponse>> getAllRules() {
@@ -56,7 +55,7 @@ public class RuleController {
         }
     }
 
-        @DeleteMapping("/delete")
+    @DeleteMapping("/delete")
     public ResponseEntity<StringResponse> deleteRule(@RequestParam Long id) {
         ruleService.deleteRule(id);
         return ResponseEntity.ok(new StringResponse("Rule deleted successfully"));

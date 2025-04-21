@@ -25,13 +25,13 @@ public class RuleService implements IRuleService {
         this.userService = userService;
     }
     @Override
-    public void createRule(RuleDTO ruleDTO) {
+    public RuleModel createRule(RuleDTO ruleDTO) {
         // Logic to create a rule
         RuleModel ruleModel = new RuleModel();
         ruleModel.setAction(ruleDTO.getAction());
         ruleModel.setDevice(deviceService.findByFeed(ruleDTO.getFeedName()));
         ruleModel.setUser(userService.getUserById(ruleDTO.getUserId()));
-        ruleRepository.save(ruleModel);
+        return ruleRepository.save(ruleModel);
     }
     @Override
     public void updateRule(Long id ,RuleDTO ruleDTO ) {
