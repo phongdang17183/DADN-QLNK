@@ -16,8 +16,8 @@ public class MqttOutboundConfig {
 //    @Value("${mqtt.client.id}")
 //    private String CLIENT_ID;
 
-    @Value("${mqtt.subscribe.topic}")
-    private String DEFAULT_TOPIC;
+//    @Value("${mqtt.subscribe.topic}")
+//    private String DEFAULT_TOPIC;
 
     @Bean
     public MessageChannel mqttOutboundChannel() {
@@ -30,7 +30,7 @@ public class MqttOutboundConfig {
         String CLIENT_ID = "mqtt-handler" ;
         MqttPahoMessageHandler handler = new MqttPahoMessageHandler(CLIENT_ID, mqttClientFactory);
         handler.setAsync(true);
-        handler.setDefaultTopic(DEFAULT_TOPIC);
+//        handler.setDefaultTopic(DEFAULT_TOPIC);
         handler.setConverter(new DefaultPahoMessageConverter());
         return handler;
     }

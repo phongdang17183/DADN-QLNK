@@ -13,4 +13,8 @@ public interface RuleRepository extends JpaRepository<RuleModel, Long> {
     @Query("SELECT r FROM RuleModel r WHERE r.device.id = :deviceId")
 //    r.device.id = :deviceId: Ở đây, device.id chính là thuộc tính bên DeviceModel được đánh dấu @Id, kiểu String.
     List<RuleModel> findRulesByDeviceId(@Param("deviceId") String deviceId);
+
+    @Query("SELECT r FROM RuleModel r WHERE r.action LIKE CONCAT('%', :actuatorNameAndZoneId, '%')")
+    List<RuleModel> findRulesByActuatorNameAndZoneId(@Param("actuatorNameAndZoneId") String actuatorNameAndZoneId);
+
 }
