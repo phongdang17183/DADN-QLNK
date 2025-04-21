@@ -16,7 +16,7 @@ public class CORSConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOriginPatterns(List.of("*")); // Cho phép tất cả các origin
 
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE",
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH",
                 "OPTIONS")); // Allowed methods
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type",
                 "Accept"));
