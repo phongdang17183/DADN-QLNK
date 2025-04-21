@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.IotProject.dto.LoginDTO;
 import com.example.IotProject.dto.RegisterDTO;
 import com.example.IotProject.dto.ResetPasswordDTO;
+import com.example.IotProject.response.LoginResponse;
 import com.example.IotProject.response.StringResponse;
 import com.example.IotProject.service.AuthService.IAuthService;
 
@@ -27,8 +28,8 @@ public class AuthController {
     private final IAuthService authService;
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginDTO loginDTO) {
-        String token = authService.login(loginDTO.getUsername(), loginDTO.getPassword());
-        return ResponseEntity.ok(new StringResponse(token));
+        LoginResponse response = authService.login(loginDTO.getUsername(), loginDTO.getPassword());
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/register")

@@ -18,6 +18,7 @@ import com.example.IotProject.exception.DataNotFoundException;
 import com.example.IotProject.exception.ExistUsernameException;
 import com.example.IotProject.model.UserModel;
 import com.example.IotProject.repository.UserRepository;
+import com.example.IotProject.response.LoginResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -32,7 +33,7 @@ public class AuthService implements IAuthService {
     private final IEmailService emailService;
 
     @Override
-    public String login(String username, String password) {
+    public LoginResponse login(String username, String password) {
         UserModel existingUser = userRepository.findByUsername(username)
                 .orElseThrow(() -> new BadCredentialsException("Username or password is incorrect"));
 
@@ -46,9 +47,9 @@ public class AuthService implements IAuthService {
 
         // Set the authentication in the SecurityContextHolder
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        
 
-
-        return jwtTokenUtil.generateToken(existingUser);
+        return new LoginResponse(existingUser.getId(), jwtTokenUtil.generateToken(existingUser),existingUser.getUsername());
     }
 
     @Override

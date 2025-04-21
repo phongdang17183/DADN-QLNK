@@ -12,7 +12,7 @@ public interface DeviceDataRepository extends JpaRepository<DeviceDataModel, Lon
     List<DeviceDataModel> findByDevice_feedName(String device_id);
 
     @Query(value =
-            "SELECT d.* FROM device_data d " +
+        "SELECT d.* FROM device_data d " +
                     "INNER JOIN devices dm ON d.device_id = dm.feed_name " +
                     "WHERE dm.feed_name = :deviceId " +
                     "AND d.time BETWEEN :startTime AND :endTime " +
@@ -25,7 +25,11 @@ public interface DeviceDataRepository extends JpaRepository<DeviceDataModel, Lon
     );
 
     @Query(value =
-            "TODO",
+        "SELECT d.* FROM device_data d " +
+                "INNER JOIN devices dm ON d.device_id = dm.feed_name " +
+                "WHERE dm.zone_id = :deviceId " +
+                "AND d.time BETWEEN :startTime AND :endTime " +
+                "ORDER BY d.time ASC",
             nativeQuery = true)
     List<DeviceDataModel> findByZoneIdAndTimeRangeNative(
             @Param("deviceId") Long zoneId,
