@@ -7,7 +7,7 @@ import com.example.IotProject.model.UserModel;
 public interface IUserService {
     public List<UserModel> getAllUser();
     public UserModel getUserById(Long id);
-    public UserModel addUser(UserModel user);
+    public void addUser(UserModel user);
     public void updateUser(Long id, UserModel user);
     public void deleteUser(Long id);
     public UserModel getCurrentUser();

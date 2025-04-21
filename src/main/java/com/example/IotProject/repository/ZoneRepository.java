@@ -12,6 +12,7 @@ import java.util.List;
 @Repository
 public interface ZoneRepository extends JpaRepository<ZoneModel, Long> {
     ZoneModel findByName(String name);
+    boolean existsByName(String name);
 
     // Get list of all zone using pageable
     @Query(value = "SELECT * FROM zones", nativeQuery = true)

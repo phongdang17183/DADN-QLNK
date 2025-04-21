@@ -34,8 +34,8 @@ public class ZoneService implements IZoneService {
 
     @Override
     public ZoneModel addZone(ZoneModel zone) {
-        if(zoneRepository.existsById(zone.getId())){
-            throw new ExistUsernameException("Zone already exists!");
+        if(zoneRepository.existsByName(zone.getName())){
+            throw new ExistUsernameException("Zone already exists with name: " + zone.getName());
         }
         return zoneRepository.save(zone);
     }

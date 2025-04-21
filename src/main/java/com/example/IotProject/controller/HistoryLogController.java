@@ -13,6 +13,7 @@ import com.example.IotProject.service.HistoryLogService.HistoryLogService;
 
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -29,25 +30,36 @@ public class HistoryLogController {
 
     @GetMapping("")
     public ResponseEntity<List<HistoryLogResponse>> getHistoryLog() {
-        List<HistoryLogResponse> histories = new java.util.ArrayList<>(List.of());
+        List<HistoryLogResponse> histories = new ArrayList<>();
+
+        // Lấy dữ liệu từ các service
         List<HistoryLogModel> historyLogModels = historyLogService.getAll();
         List<DeviceLogModel> deviceLogModels = deviceLogService.getAll();
-        for(HistoryLogModel historyLogModel : historyLogModels){
+
+        // Convert từ HistoryLogModel sang HistoryLogResponse
+        for (HistoryLogModel historyLogModel : historyLogModels) {
             histories.add(HistoryLogResponse.builder()
-                            .username(historyLogModel.getUser().getUsername())
-                            .action(historyLogModel.getAction())
-                            .timestamp(historyLogModel.getTimestamp())
-                            .build());
+                    .username(historyLogModel.getUser().getUsername())
+                    .action(historyLogModel.getAction())
+                    .timestamp(historyLogModel.getTimestamp())
+                    .build());
         }
-        for(DeviceLogModel deviceLogModel : deviceLogModels){
+
+        // Convert từ DeviceLogModel sang HistoryLogResponse
+        for (DeviceLogModel deviceLogModel : deviceLogModels) {
             histories.add(HistoryLogResponse.builder()
                     .device(deviceLogModel.getDevice().getFeedName())
                     .action(deviceLogModel.getAction())
                     .timestamp(deviceLogModel.getTimestamp())
                     .build());
         }
+
+        // Sắp xếp theo timestamp giảm dần
+        histories.sort((h1, h2) -> h2.getTimestamp().compareTo(h1.getTimestamp()));
+
         return ResponseEntity.ok(histories);
     }
+
 
 
 }

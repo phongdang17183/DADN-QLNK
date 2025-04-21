@@ -17,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ZoneModel {
     @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;

@@ -24,8 +24,9 @@ public class AdminController {
 
     @PreAuthorize("hasRole('ROLE_Admin')")
     @PostMapping("/users")
-    public ResponseEntity<UserModel> addUser(@RequestBody UserModel user) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.addUser(user));
+    public ResponseEntity<?> addUser(@RequestBody UserModel user) {
+        userService.addUser(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body("User created successfully!");
     }
 
     @PreAuthorize("hasRole('ROLE_Admin')")

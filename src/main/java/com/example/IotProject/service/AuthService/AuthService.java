@@ -49,7 +49,7 @@ public class AuthService implements IAuthService {
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         
 
-        return new LoginResponse(existingUser.getId(), jwtTokenUtil.generateToken(existingUser),existingUser.getUsername());
+        return new LoginResponse(existingUser.getId(), jwtTokenUtil.generateToken(existingUser),existingUser.getUsername(), existingUser.getRole());
     }
 
     @Override
@@ -87,7 +87,7 @@ public class AuthService implements IAuthService {
         //         "Your OTP is: " + existingUser.getOtp()));
         emailService.sendOTPEmail(existingUser.getFullName(), resetPasswordDTO.getEmail(), existingUser.getOtp());
         // update user
-        userService.updateUser(existingUser);
+        userService.updateUser(existingUser.getId(),existingUser);
     }
 
     @Override
@@ -98,10 +98,9 @@ public class AuthService implements IAuthService {
             throw new DataNotFoundException("Your OTP is incorrect");
         }
         // set new password and remove otp
-        existingUser.setPassword(passwordEncoder.encode(resetPasswordDTO.getNewPassword()));
         existingUser.setOtp(UUID.randomUUID().toString().replace("-", "").substring(0, 6));
         // update user
-        userService.updateUser(existingUser);
+        userService.updateUser(existingUser.getId(),existingUser);
 
     }
 
