@@ -37,10 +37,10 @@ public class AuthService implements IAuthService {
         UserModel existingUser = userRepository.findByUsername(username)
                 .orElseThrow(() -> new BadCredentialsException("Username or password is incorrect"));
 
-        // TODO: CHECK PASSWORD BY ENCODER
-        if (!passwordEncoder.matches(password, existingUser.getPassword())) {
-            throw new BadCredentialsException("Username or password is incorrect");
-        }
+        // // TODO: CHECK PASSWORD BY ENCODER
+        // if (!passwordEncoder.matches(password, existingUser.getPassword())) {
+        //     throw new BadCredentialsException("Username or password is incorrect");
+        // }
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                 username, password, existingUser.getAuthorities());
         authenticationManager.authenticate(authenticationToken);
@@ -87,7 +87,7 @@ public class AuthService implements IAuthService {
         //         "Your OTP is: " + existingUser.getOtp()));
         emailService.sendOTPEmail(existingUser.getFullName(), resetPasswordDTO.getEmail(), existingUser.getOtp());
         // update user
-        userService.updateUser(existingUser.getId(),existingUser);
+        userService.updateUser(existingUser.getId(), existingUser);
     }
 
     @Override
@@ -99,8 +99,9 @@ public class AuthService implements IAuthService {
         }
         // set new password and remove otp
         existingUser.setOtp(UUID.randomUUID().toString().replace("-", "").substring(0, 6));
+        existingUser.setPassword(resetPasswordDTO.getNewPassword());
         // update user
-        userService.updateUser(existingUser.getId(),existingUser);
+        userService.updateUser(existingUser.getId(), existingUser);
 
     }
 
