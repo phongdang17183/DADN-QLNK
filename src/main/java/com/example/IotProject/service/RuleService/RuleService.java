@@ -2,8 +2,10 @@ package com.example.IotProject.service.RuleService;
 
 import java.util.List;
 
+import com.example.IotProject.model.ConditionRuleModel;
 import com.example.IotProject.service.DeviceService.IDeviceService;
 import com.example.IotProject.service.UserService.IUserService;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
 import com.example.IotProject.dto.RuleDTO;
@@ -23,13 +25,13 @@ public class RuleService implements IRuleService {
         this.userService = userService;
     }
     @Override
-    public void createRule(RuleDTO ruleDTO) {
+    public RuleModel createRule(RuleDTO ruleDTO) {
         // Logic to create a rule
         RuleModel ruleModel = new RuleModel();
         ruleModel.setAction(ruleDTO.getAction());
         ruleModel.setDevice(deviceService.findByFeed(ruleDTO.getFeedName()));
         ruleModel.setUser(userService.getUserById(ruleDTO.getUserId()));
-        ruleRepository.save(ruleModel);
+        return ruleRepository.save(ruleModel);
     }
     @Override
     public void updateRule(Long id ,RuleDTO ruleDTO ) {
@@ -50,6 +52,7 @@ public class RuleService implements IRuleService {
         // Logic to delete a rule
         RuleModel ruleModel = ruleRepository.findAllById(id);
         if (ruleModel != null) {
+
             ruleRepository.delete(ruleModel);
         } else {
             throw new RuntimeException("Rule not found with id: " + id);
@@ -79,4 +82,17 @@ public class RuleService implements IRuleService {
         }
         return rules;
     }
+
+    @Override
+    public List<RuleModel> getRuleByActuatorNameAndZoneId(String actuatorName, Long zoneId) {
+        String actuatorNameAndZoneId = actuatorName + '-' + zoneId.toString();
+        List<RuleModel> rules = ruleRepository.findRulesByActuatorNameAndZoneId(actuatorNameAndZoneId);
+
+        if (rules == null || rules.isEmpty()) {
+            throw new RuntimeException("No rule found with actuatorName = " + actuatorName + " and zoneId = " + zoneId);
+        }
+
+        return rules;
+    }
+
 }

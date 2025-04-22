@@ -54,7 +54,7 @@ public class DeviceDataController {
     }
 
     // Lấy dữ liệu 1 ngày
-    @GetMapping("/oneday/{feedName}")
+    @GetMapping("/oneday")
     public List<DeviceDataResponse> getDataOneDay(@RequestParam("feedName") String feedName) {
         List<DeviceDataResponse> deviceDataResponses = deviceDataService.getDataOneDay(feedName).stream().map(
                                                 deviceDataModel -> DeviceDataResponse.builder()
@@ -67,7 +67,7 @@ public class DeviceDataController {
     }
 
     // Lấy dữ liệu 1 tuần
-    @GetMapping("/oneweek/{feedName}")
+    @GetMapping("/oneweek")
     public List<DeviceDataResponse> getDataOneWeek(@RequestParam("feedName") String feedName) {
         List<DeviceDataResponse> deviceDataResponses = deviceDataService.getDataOneWeek(feedName).stream().map(
                 deviceDataModel -> DeviceDataResponse.builder()
@@ -80,7 +80,7 @@ public class DeviceDataController {
     }
 
     // Lấy dữ liệu 1 tháng
-    @GetMapping("/onemonth/{feedName}")
+    @GetMapping("/onemonth")
     public List<DeviceDataResponse> getDataByZoneOneMonth(@RequestParam("feedName") String feedName) {
         List<DeviceDataResponse> deviceDataResponses = deviceDataService.getDataOneMonth(feedName).stream().map(
                 deviceDataModel -> DeviceDataResponse.builder()
@@ -93,7 +93,7 @@ public class DeviceDataController {
     }
 
     // Lấy dữ liệu 1 ngày
-    @GetMapping("/oneday/{ZoneId}")
+    @GetMapping("/datazoneday")
     public List<DeviceDataResponse> getDataByZoneOneDay(@RequestParam("ZoneId") Long ZoneId) {
         List<DeviceDataResponse> deviceDataResponses = deviceDataService.getDataByZoneOneDay(ZoneId).stream().map(
                 deviceDataModel -> DeviceDataResponse.builder()
@@ -106,7 +106,7 @@ public class DeviceDataController {
     }
 
     // Lấy dữ liệu 1 tuần
-    @GetMapping("/oneweek/{ZoneId}")
+    @GetMapping("/datazoneweek")
     public List<DeviceDataResponse> getDataByZoneOneWeek(@RequestParam("ZoneId") Long ZoneId) {
         List<DeviceDataResponse> deviceDataResponses = deviceDataService.getDataByZoneOneWeek(ZoneId).stream().map(
                 deviceDataModel -> DeviceDataResponse.builder()
@@ -119,7 +119,7 @@ public class DeviceDataController {
     }
 
     // Lấy dữ liệu 1 tháng
-    @GetMapping("/onemonth/{ZoneId}")
+    @GetMapping("/datazonemonth")
     public List<DeviceDataResponse> getDataOneMonth(@RequestParam("ZoneId") Long ZoneId) {
         List<DeviceDataResponse> deviceDataResponses = deviceDataService.getDataByZoneOneMonth(ZoneId).stream().map(
                 deviceDataModel -> DeviceDataResponse.builder()
