@@ -46,6 +46,12 @@ public class ConditionRuleController {
         return ResponseEntity.ok(conditionRuleService.getAll());
     }
 
+    @GetMapping("/getByRuleId")
+    public ResponseEntity<?> getConditionRuleByRuleId(@RequestParam Long ruleId) {
+        return ResponseEntity.ok(conditionRuleService.getConditionByRule(ruleId));
+    }
+
+
     @GetMapping("/getById")
     public ResponseEntity<?> getConditionRuleById(@RequestParam Long id) {
         return ResponseEntity.ok(conditionRuleService.getRuleById(id));
